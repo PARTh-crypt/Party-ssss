@@ -9,7 +9,6 @@ def home():
 <html>
 <head>
 <title>PARTH'S KISAN SAATHI</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
@@ -37,42 +36,62 @@ body {
     100% {background-position: 0% 50%;}
 }
 
-/* --- Arrow --- */
+/* --- Bow + Arrow --- */
+.bow {
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
+    height: auto;
+}
+
 .arrow {
     position: absolute;
-    bottom: 12%;
+    bottom: 22%;
     left: 50%;
-    width: 8px;
-    height: 80px;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 120px;
     background: linear-gradient(to top, #ffb74d, #ffd54f);
     clip-path: polygon(50% 0%, 60% 10%, 55% 10%, 60% 20%, 55% 20%, 50% 30%, 45% 20%, 40% 20%, 45% 10%, 40% 10%);
     animation: shoot 2.2s ease forwards;
 }
 
 @keyframes shoot {
-    0% { bottom: 12%; opacity: 1; }
+    0% { bottom: 22%; opacity: 1; }
     90% { opacity: 1; }
-    100% { bottom: 120%; opacity: 0; }
+    100% { bottom: 130%; opacity: 0; }
 }
 
 /* --- Headings & Text --- */
 h1 {
-    font-size: 52px;
+    font-size: 56px;
     margin-top: 20px;
+    font-weight: 700;
     text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
 }
 
-p {
-    margin-top: 12px;
-    font-size: 20px;
+h2 {
+    font-size: 28px;
+    margin-top: 8px;
     opacity: 0.9;
     text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+}
+
+/* --- Footer --- */
+.footer {
+    position: absolute;
+    bottom: 15px;
+    right: 20px;
+    font-size: 14px;
+    color: #ffffffcc;
 }
 
 /* --- Button --- */
 .enter-btn {
     margin-top: 40px;
-    padding: 14px 45px;
+    padding: 14px 50px;
     border-radius: 30px;
     border: none;
     background: linear-gradient(45deg, #fdd835, #fbc02d);
@@ -93,13 +112,18 @@ p {
 
 <body>
 
-<!-- Animated arrow from bottom center -->
+<!-- Bow placeholder (CSS/SVG could be enhanced later) -->
+<img class="bow" src="https://i.imgur.com/ZlO3lMa.png" alt="Bow">
+
+<!-- Animated arrow -->
 <div class="arrow"></div>
 
 <h1>PARTH'S KISAN SAATHI</h1>
-<p>Smart Farming. Better Future.</p>
+<h2>Sabka Smart Saathi</h2>
 
 <button class="enter-btn">Enter App</button>
+
+<div class="footer">Powered by PARTH'S INDUSTRIES</div>
 
 </body>
 </html>
