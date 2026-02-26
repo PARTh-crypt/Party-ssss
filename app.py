@@ -36,21 +36,20 @@ body {
     100% {background-position: 0% 50%;}
 }
 
-/* --- Cinematic Light Streak Animation --- */
-.light-streak {
+/* --- Farming Animation (moving wheat stalks) --- */
+.stalk {
     position: absolute;
-    width: 200%;
-    height: 4px;
-    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
-    top: 30%;
-    left: -100%;
-    transform: rotate(25deg);
-    animation: streakMove 5s linear infinite;
+    width: 4px;
+    height: 40px;
+    background: linear-gradient(to top, #f9d976, #f39c12);
+    border-radius: 2px;
+    animation: sway 6s linear infinite;
 }
 
-@keyframes streakMove {
-    0% {left: -100%;}
-    100% {left: 100%;}
+@keyframes sway {
+    0% {transform: translateY(0) rotate(-5deg);}
+    50% {transform: translateY(-120vh) rotate(5deg);}
+    100% {transform: translateY(0) rotate(-5deg);}
 }
 
 /* --- Headings & Text --- */
@@ -104,8 +103,13 @@ h2 {
 
 <body>
 
-<!-- Cinematic Light Streak -->
-<div class="light-streak"></div>
+<!-- Farming stalks -->
+<div class="stalk" style="bottom:0; left:10%; animation-delay:0s;"></div>
+<div class="stalk" style="bottom:0; left:25%; animation-delay:1s;"></div>
+<div class="stalk" style="bottom:0; left:40%; animation-delay:2s;"></div>
+<div class="stalk" style="bottom:0; left:55%; animation-delay:3s;"></div>
+<div class="stalk" style="bottom:0; left:70%; animation-delay:4s;"></div>
+<div class="stalk" style="bottom:0; left:85%; animation-delay:5s;"></div>
 
 <h1>PARTH'S KISAN SAATHI</h1>
 <h2>Har Kisan Ka Digital Saathi</h2>
