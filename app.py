@@ -17,9 +17,9 @@ def home():
 body {
     margin: 0;
     height: 100vh;
-    background: linear-gradient(135deg, #a8e063, #56ab2f, #87ceeb);
-    background-size: 300% 300%;
-    animation: bgMove 12s ease infinite;
+    background: linear-gradient(135deg, #a8e063, #56ab2f, #87ceeb, #fff59d);
+    background-size: 400% 400%;
+    animation: bgMove 15s ease infinite;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -42,26 +42,26 @@ body {
     bottom: 10%;
     left: 50%;
     transform: translateX(-50%);
-    width: 120px;
+    width: 150px;
 }
 
 .arrow {
     position: absolute;
-    bottom: 20%;
+    bottom: 18%;
     left: 50%;
     transform: translateX(-50%);
-    width: 60px;
-    animation: shoot 2s ease forwards;
+    width: 70px;
+    animation: shoot 2.2s ease forwards;
 }
 
 @keyframes shoot {
-    0% { bottom: 20%; opacity: 1; }
+    0% { bottom: 18%; opacity: 1; }
     90% { opacity: 1; }
     100% { bottom: 120%; opacity: 0; }
 }
 
 h1 {
-    font-size: 48px;
+    font-size: 50px;
     margin-top: 20px;
 }
 
@@ -72,9 +72,9 @@ p {
 }
 
 .enter-btn {
-    margin-top: 30px;
-    padding: 12px 35px;
-    border-radius: 25px;
+    margin-top: 35px;
+    padding: 14px 40px;
+    border-radius: 30px;
     border: none;
     background: white;
     color: #2f6f2f;
@@ -93,7 +93,7 @@ p {
 
 <body>
 
-<!-- Replace src with your Gandiv bow + arrow image URL -->
+<!-- Replace these URLs with your actual Gandiv bow and arrow PNG images -->
 <img class="bow" src="https://i.imgur.com/your_bow_image.png" alt="Bow">
 <img class="arrow" src="https://i.imgur.com/your_arrow_image.png" alt="Arrow">
 
