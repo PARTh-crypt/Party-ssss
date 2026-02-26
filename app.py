@@ -381,4 +381,4 @@ function voiceCommand() {
 <button class="lang-btn" style="right:120px;" onclick="setLanguage('hi')">हिंदी</button>
 </body>
 </html>
-"""
+""")
