@@ -17,7 +17,7 @@ def home():
 body {
     margin: 0;
     height: 100vh;
-    background: linear-gradient(135deg, #a8e063, #56ab2f, #87ceeb, #fff176);
+    background: linear-gradient(135deg, #c8facc, #a8e063, #87ceeb, #fff176);
     background-size: 400% 400%;
     animation: bgMove 20s ease infinite;
     display: flex;
@@ -36,20 +36,20 @@ body {
     100% {background-position: 0% 50%;}
 }
 
-/* --- Farming Animation (moving wheat stalks) --- */
-.stalk {
+/* --- Cinematic Farm Light Streaks --- */
+.streak {
     position: absolute;
-    width: 4px;
-    height: 40px;
-    background: linear-gradient(to top, #f9d976, #f39c12);
-    border-radius: 2px;
-    animation: sway 6s linear infinite;
+    width: 3px;
+    height: 60px;
+    background: linear-gradient(to top, rgba(255,223,107,0.7), rgba(255,243,175,0.0));
+    border-radius: 50%;
+    animation: floatStreak 8s linear infinite;
 }
 
-@keyframes sway {
-    0% {transform: translateY(0) rotate(-5deg);}
-    50% {transform: translateY(-120vh) rotate(5deg);}
-    100% {transform: translateY(0) rotate(-5deg);}
+@keyframes floatStreak {
+    0% {transform: translateY(0) translateX(0) rotate(0deg);}
+    50% {transform: translateY(-120vh) translateX(30px) rotate(10deg);}
+    100% {transform: translateY(0) translateX(-30px) rotate(-10deg);}
 }
 
 /* --- Headings & Text --- */
@@ -103,13 +103,13 @@ h2 {
 
 <body>
 
-<!-- Farming stalks -->
-<div class="stalk" style="bottom:0; left:10%; animation-delay:0s;"></div>
-<div class="stalk" style="bottom:0; left:25%; animation-delay:1s;"></div>
-<div class="stalk" style="bottom:0; left:40%; animation-delay:2s;"></div>
-<div class="stalk" style="bottom:0; left:55%; animation-delay:3s;"></div>
-<div class="stalk" style="bottom:0; left:70%; animation-delay:4s;"></div>
-<div class="stalk" style="bottom:0; left:85%; animation-delay:5s;"></div>
+<!-- Cinematic farm streaks -->
+<div class="streak" style="bottom:0; left:10%; animation-delay:0s;"></div>
+<div class="streak" style="bottom:0; left:25%; animation-delay:1s;"></div>
+<div class="streak" style="bottom:0; left:40%; animation-delay:2s;"></div>
+<div class="streak" style="bottom:0; left:55%; animation-delay:3s;"></div>
+<div class="streak" style="bottom:0; left:70%; animation-delay:4s;"></div>
+<div class="streak" style="bottom:0; left:85%; animation-delay:5s;"></div>
 
 <h1>PARTH'S KISAN SAATHI</h1>
 <h2>Har Kisan Ka Digital Saathi</h2>
