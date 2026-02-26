@@ -18,9 +18,9 @@ def home():
 body {
     margin: 0;
     height: 100vh;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1);
+    background: linear-gradient(135deg, #a8e063, #56ab2f, #87ceeb, #fff176);
     background-size: 400% 400%;
-    animation: bgMove 20s ease infinite;
+    animation: bgMove 15s ease infinite;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,26 +37,20 @@ body {
     100% {background-position: 0% 50%;}
 }
 
-/* --- Bow + Arrow --- */
-.bow {
+/* --- Arrow --- */
+.arrow {
     position: absolute;
     bottom: 12%;
     left: 50%;
-    transform: translateX(-50%);
-    width: 160px;
-}
-
-.arrow {
-    position: absolute;
-    bottom: 20%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
+    width: 8px;
+    height: 80px;
+    background: linear-gradient(to top, #ffb74d, #ffd54f);
+    clip-path: polygon(50% 0%, 60% 10%, 55% 10%, 60% 20%, 55% 20%, 50% 30%, 45% 20%, 40% 20%, 45% 10%, 40% 10%);
     animation: shoot 2.2s ease forwards;
 }
 
 @keyframes shoot {
-    0% { bottom: 20%; opacity: 1; }
+    0% { bottom: 12%; opacity: 1; }
     90% { opacity: 1; }
     100% { bottom: 120%; opacity: 0; }
 }
@@ -65,7 +59,7 @@ body {
 h1 {
     font-size: 52px;
     margin-top: 20px;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
 }
 
 p {
@@ -81,7 +75,7 @@ p {
     padding: 14px 45px;
     border-radius: 30px;
     border: none;
-    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+    background: linear-gradient(45deg, #fdd835, #fbc02d);
     color: #2f6f2f;
     font-weight: bold;
     cursor: pointer;
@@ -99,9 +93,8 @@ p {
 
 <body>
 
-<!-- Ready-to-use bow + arrow placeholders -->
-<img class="bow" src="https://i.imgur.com/ZlO3lMa.png" alt="Bow">
-<img class="arrow" src="https://i.imgur.com/5v4g2NW.png" alt="Arrow">
+<!-- Animated arrow from bottom center -->
+<div class="arrow"></div>
 
 <h1>PARTH'S KISAN SAATHI</h1>
 <p>Smart Farming. Better Future.</p>
