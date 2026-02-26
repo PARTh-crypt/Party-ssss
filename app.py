@@ -10,21 +10,23 @@ def home():
 <head>
 <title>PARTH'S KISAN SAATHI</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
 
 body {
     margin: 0;
     height: 100vh;
-    background: linear-gradient(135deg, #1e1e2f, #2b2b45, #3a3a5f);
+    background: linear-gradient(135deg, #56ab2f, #a8e063, #87ceeb);
     background-size: 300% 300%;
-    animation: bgMove 10s ease infinite;
+    animation: bgMove 12s ease infinite;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    color: #e8d8b9;
+    font-family: 'Montserrat', sans-serif;
+    color: #ffffff;
+    text-align: center;
 }
 
 @keyframes bgMove {
@@ -33,37 +35,43 @@ body {
     100% {background-position: 0% 50%;}
 }
 
+.logo {
+    font-size: 60px;
+    margin-bottom: 20px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
 h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 52px;
-    letter-spacing: 3px;
+    font-size: 48px;
     margin: 0;
-    text-align: center;
 }
 
 p {
-    font-family: 'Poppins', sans-serif;
-    font-size: 18px;
     margin-top: 15px;
-    opacity: 0.8;
+    font-size: 18px;
+    opacity: 0.9;
 }
 
 .enter-btn {
     margin-top: 40px;
-    padding: 14px 35px;
-    border: none;
+    padding: 14px 40px;
     border-radius: 30px;
-    background: #c5a46d;
-    color: #1e1e2f;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    font-size: 16px;
+    border: none;
+    background: white;
+    color: #2f6f2f;
+    font-weight: bold;
     cursor: pointer;
-    transition: 0.3s ease;
+    transition: 0.3s;
 }
 
 .enter-btn:hover {
-    background: #e8d8b9;
+    background: #f1f1f1;
     transform: scale(1.05);
 }
 
@@ -72,10 +80,12 @@ p {
 
 <body>
 
-<h1>PARTH'S KISAN SAATHI</h1>
-<p>Royal Farming Intelligence System</p>
+<div class="logo">🏹</div>
 
-<button class="enter-btn">Enter Platform</button>
+<h1>PARTH'S KISAN SAATHI</h1>
+<p>Smart Farming. Better Future.</p>
+
+<button class="enter-btn">Enter App</button>
 
 </body>
 </html>
