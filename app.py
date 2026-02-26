@@ -382,3 +382,103 @@ function voiceCommand() {
 </body>
 </html>
 """)
+    from flask import Flask, request, jsonify, render_template_string
+
+app = Flask(__name__)
+
+# ------------------- Dashboard -------------------
+@app.route("/dashboard")
+def dashboard():
+    return render_template_string("""
+<!DOCTYPE html>
+<html>
+<head>
+<title>PARTH'S KISAN DASHBOARD</title>
+<style>
+body {font-family:Arial,sans-serif; text-align:center; background:#f0fff0; margin:0; padding:50px;}
+h1 {font-size:36px; color:#2f6f2f;}
+button {margin:12px; padding:14px 32px; border-radius:20px; border:none; font-size:18px; cursor:pointer; font-weight:bold; color:#fff; transition:0.3s;}
+button:hover {transform:scale(1.05);}
+#weather-btn{background:linear-gradient(45deg,#4fc3f7,#0288d1);}
+#crop-btn{background:linear-gradient(45deg,#aed581,#7cb342);}
+#bill-btn{background:linear-gradient(45deg,#ffd54f,#ffa000);}
+#voice-btn{background:linear-gradient(45deg,#ff8a65,#d84315);}
+</style>
+</head>
+<body>
+<h1>PARTH'S KISAN DASHBOARD</h1>
+
+<button id="weather-btn" onclick="getWeather()">🌤️ Weather</button>
+<button id="crop-btn" onclick="getCropAdvice()">🌱 Crop Advice</button>
+<button id="bill-btn" onclick="getBill()">🧾 Bill Maker</button>
+<button id="voice-btn" onclick="voiceAssistant()">🎙️ Voice</button>
+
+<script>
+function getWeather(){
+    fetch('/weather-api')
+    .then(res=>res.json())
+    .then(data=>alert("Temperature: "+data.temp+"°C\\nCondition: "+data.condition))
+    .catch(()=>alert("Weather info not available"));
+}
+
+function getCropAdvice(){
+    fetch('/crop-api')
+    .then(res=>res.json())
+    .then(data=>alert(data.advice))
+    .catch(()=>alert("Crop advice not available"));
+}
+
+function getBill(){
+    fetch('/bill-api')
+    .then(res=>res.json())
+    .then(data=>alert("Total Bill: ₹"+data.total))
+    .catch(()=>alert("Bill calculation failed"));
+}
+
+function voiceAssistant(){
+    let cmd = prompt("Enter your command / अपना कमांड लिखें");
+    if(!cmd) return;
+    fetch('/voice-api',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({command:cmd})
+    })
+    .then(res=>res.json())
+    .then(data=>alert(data.response))
+    .catch(()=>alert("Voice assistant not available"));
+}
+</script>
+</body>
+</html>
+""")
+
+# ------------------- Flask routes for buttons -------------------
+@app.route("/weather-api")
+def weather_api():
+    return {"temp":32, "condition":"Sunny / धूप"}
+
+@app.route("/crop-api")
+def crop_api():
+    return {"advice":"Recommended Crops: Rice, Wheat, Maize / सुझाई गई फसलें: धान, गेहूं, मक्का"}
+
+@app.route("/bill-api")
+def bill_api():
+    items = [{"item":"Seed","qty":2,"price":50},{"item":"Fertilizer","qty":1,"price":100}]
+    total = sum(item['qty']*item['price'] for item in items)
+    return {"total": total}
+
+@app.route("/voice-api", methods=["POST"])
+def voice_api():
+    command = request.json.get("command","").lower()
+    if "weather" in command:
+        return {"response":"Weather info: Sunny / धूप"}
+    elif "crop" in command:
+        return {"response":"Crop Advice: Rice / धान"}
+    elif "bill" in command:
+        return {"response":"Total Bill: ₹200"}
+    else:
+        return {"response":"Command not recognized / कमांड समझ नहीं आई"}
+
+# ------------------- Run server -------------------
+if __name__=="__main__":
+    app.run(debug=True)
