@@ -9,7 +9,7 @@ def home():
 <html>
 <head>
 <title>PARTH'S KISAN SAATHI</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 
 <style>
 
@@ -36,26 +36,27 @@ body {
     100% {background-position: 0% 50%;}
 }
 
-/* Bow (CSS) */
+/* Bow (centered) */
 .bow {
     position: absolute;
-    bottom: 10%;
+    bottom: 12%;
     left: 50%;
+    transform: translateX(-50%);
     width: 180px;
     height: 200px;
-    transform: translateX(-50%);
-    border-left: 6px solid #6d4c41;
+    border: 6px solid #6d4c41;
     border-radius: 90px / 100px;
+    box-sizing: border-box;
 }
 
-/* Arrow */
+/* Arrow (centered) */
 .arrow {
     position: absolute;
     bottom: 22%;
     left: 50%;
     transform: translateX(-50%);
-    width: 16px;
-    height: 120px;
+    width: 18px;
+    height: 130px;
     background: linear-gradient(to top, #ffb74d, #ffd54f);
     clip-path: polygon(50% 0%, 60% 10%, 55% 10%, 60% 20%, 55% 20%, 50% 30%, 45% 20%, 40% 20%, 45% 10%, 40% 10%);
     animation: shoot 2.2s ease forwards;
@@ -69,6 +70,7 @@ body {
 
 /* Headings & Text */
 h1 {
+    font-family: 'Playfair Display', serif;
     font-size: 56px;
     margin-top: 20px;
     font-weight: 700;
@@ -76,10 +78,11 @@ h1 {
 }
 
 h2 {
+    font-family: 'Montserrat', sans-serif;
     font-size: 28px;
     margin-top: 8px;
-    opacity: 0.9;
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+    opacity: 0.95;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.25);
 }
 
 /* Footer */
@@ -87,8 +90,9 @@ h2 {
     position: absolute;
     bottom: 15px;
     right: 20px;
-    font-size: 14px;
-    color: #ffffffcc;
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: #ffdd57; /* different royal color */
 }
 
 /* Button */
@@ -115,10 +119,10 @@ h2 {
 
 <body>
 
-<!-- CSS Bow -->
+<!-- Centered Bow -->
 <div class="bow"></div>
 
-<!-- Animated arrow -->
+<!-- Animated Arrow -->
 <div class="arrow"></div>
 
 <h1>PARTH'S KISAN SAATHI</h1>
