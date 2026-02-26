@@ -13,7 +13,7 @@ def home():
 
 <style>
 
-/* --- Body & Background --- */
+/* Body & Background */
 body {
     margin: 0;
     height: 100vh;
@@ -36,16 +36,19 @@ body {
     100% {background-position: 0% 50%;}
 }
 
-/* --- Bow + Arrow --- */
+/* Bow (CSS) */
 .bow {
     position: absolute;
-    bottom: 15%;
+    bottom: 10%;
     left: 50%;
-    transform: translateX(-50%);
     width: 180px;
-    height: auto;
+    height: 200px;
+    transform: translateX(-50%);
+    border-left: 6px solid #6d4c41;
+    border-radius: 90px / 100px;
 }
 
+/* Arrow */
 .arrow {
     position: absolute;
     bottom: 22%;
@@ -64,7 +67,7 @@ body {
     100% { bottom: 130%; opacity: 0; }
 }
 
-/* --- Headings & Text --- */
+/* Headings & Text */
 h1 {
     font-size: 56px;
     margin-top: 20px;
@@ -79,7 +82,7 @@ h2 {
     text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
 }
 
-/* --- Footer --- */
+/* Footer */
 .footer {
     position: absolute;
     bottom: 15px;
@@ -88,7 +91,7 @@ h2 {
     color: #ffffffcc;
 }
 
-/* --- Button --- */
+/* Button */
 .enter-btn {
     margin-top: 40px;
     padding: 14px 50px;
@@ -112,8 +115,8 @@ h2 {
 
 <body>
 
-<!-- Bow placeholder (CSS/SVG could be enhanced later) -->
-<img class="bow" src="https://i.imgur.com/ZlO3lMa.png" alt="Bow">
+<!-- CSS Bow -->
+<div class="bow"></div>
 
 <!-- Animated arrow -->
 <div class="arrow"></div>
