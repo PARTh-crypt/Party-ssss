@@ -77,4 +77,60 @@ h1 {
 }
 
 h2 {
-    font-family
+    font-family: 'Montserrat', sans-serif;
+    font-size: 28px;
+    margin-top: 8px;
+    opacity: 0.95;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.25);
+}
+
+/* --- Footer --- */
+.footer {
+    position: absolute;
+    bottom: 15px;
+    right: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: #000000; /* black royal */
+}
+
+/* --- Button --- */
+.enter-btn {
+    margin-top: 40px;
+    padding: 14px 50px;
+    border-radius: 30px;
+    border: none;
+    background: linear-gradient(45deg, #fdd835, #fbc02d);
+    color: #2f6f2f;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.enter-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Bow Gandiv style -->
+<div class="bow"></div>
+
+<!-- Smooth cinematic animated arrow -->
+<div class="arrow"></div>
+
+<h1>PARTH'S KISAN SAATHI</h1>
+<h2>Sabka Smart Saathi</h2>
+
+<button class="enter-btn">Enter App</button>
+
+<div class="footer">Powered by PARTH'S INDUSTRIES</div>
+
+</body>
+</html>
+"""
