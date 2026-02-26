@@ -238,7 +238,7 @@ h2 {
 
 <button class="enter-btn" onclick="location.href='/dashboard'">Enter App / ऐप में प्रवेश करें</button>
 
-<div class="footer">Powered by PARTH'S INDUSTRIES</div>
+<div class="footer">Powered by PARTH'S</div>
 
 </body>
 </html>
