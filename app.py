@@ -13,7 +13,7 @@ def home():
 
 <style>
 
-/* --- Body & Background --- */
+/* --- Body & Gradient Background --- */
 body {
     margin: 0;
     height: 100vh;
@@ -36,20 +36,21 @@ body {
     100% {background-position: 0% 50%;}
 }
 
-/* --- Particle Animation (Cinematic) --- */
-.particle {
+/* --- Cinematic Light Streak Animation --- */
+.light-streak {
     position: absolute;
-    width: 8px;
-    height: 8px;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 50%;
-    animation: floatUp 6s linear infinite;
+    width: 200%;
+    height: 4px;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+    top: 30%;
+    left: -100%;
+    transform: rotate(25deg);
+    animation: streakMove 5s linear infinite;
 }
 
-@keyframes floatUp {
-    0% {transform: translateY(0) translateX(0);}
-    50% {transform: translateY(-150vh) translateX(50px);}
-    100% {transform: translateY(0) translateX(-50px);}
+@keyframes streakMove {
+    0% {left: -100%;}
+    100% {left: 100%;}
 }
 
 /* --- Headings & Text --- */
@@ -103,12 +104,8 @@ h2 {
 
 <body>
 
-<!-- Particle Elements -->
-<div class="particle" style="top:80%; left:20%; animation-delay:0s;"></div>
-<div class="particle" style="top:90%; left:50%; animation-delay:1s;"></div>
-<div class="particle" style="top:85%; left:70%; animation-delay:2s;"></div>
-<div class="particle" style="top:95%; left:30%; animation-delay:3s;"></div>
-<div class="particle" style="top:88%; left:60%; animation-delay:4s;"></div>
+<!-- Cinematic Light Streak -->
+<div class="light-streak"></div>
 
 <h1>PARTH'S KISAN SAATHI</h1>
 <h2>Har Kisan Ka Digital Saathi</h2>
