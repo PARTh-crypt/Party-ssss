@@ -1,4 +1,4 @@
-from flask import Flask
+        from flask import Flask
 
 app = Flask(__name__)
 
@@ -7,67 +7,80 @@ def home():
     return """
     <html>
     <head>
-        <title>PARTH KISAN SAATHI</title>
+        <title>PARTH'S KISAN SAATHI</title>
+
         <style>
             body {
                 margin: 0;
-                font-family: Arial, sans-serif;
-                background: linear-gradient(135deg, #1e3c72, #2a5298, #43e97b, #38f9d7);
-                background-size: 400% 400%;
-                animation: gradient 12s ease infinite;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                color: white;
+                background: linear-gradient(to bottom, #0f0f0f, #1c1c1c, #0a0a0a);
+                font-family: 'Times New Roman', serif;
+                overflow: hidden;
+                color: #e0d3b8;
+            }
+
+            .center-text {
+                position: absolute;
+                width: 100%;
                 text-align: center;
-            }
-
-            @keyframes gradient {
-                0% {background-position: 0% 50%;}
-                50% {background-position: 100% 50%;}
-                100% {background-position: 0% 50%;}
-            }
-
-            .box {
-                background: rgba(0,0,0,0.4);
-                padding: 40px;
-                border-radius: 20px;
-                backdrop-filter: blur(10px);
+                top: 45%;
+                opacity: 0;
+                animation: fadeIn 2s ease forwards 2s;
             }
 
             h1 {
-                font-size: 38px;
-                margin-bottom: 10px;
+                font-size: 50px;
+                letter-spacing: 4px;
+                margin: 0;
             }
 
             p {
                 font-size: 18px;
-                margin-bottom: 20px;
+                margin-top: 15px;
+                color: #bfae90;
             }
 
-            button {
-                padding: 12px 25px;
-                border: none;
-                border-radius: 25px;
-                font-size: 16px;
-                cursor: pointer;
-                background: #00ffcc;
-                color: black;
-                font-weight: bold;
+            .bow {
+                position: absolute;
+                bottom: 10%;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 80px;
+                color: #bfa46f;
             }
 
-            button:hover {
-                background: white;
+            .arrow {
+                position: absolute;
+                bottom: 18%;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 40px;
+                color: #d4b77d;
+                animation: shootUp 2s ease forwards;
             }
+
+            @keyframes shootUp {
+                0% { bottom: 18%; opacity: 1; }
+                90% { opacity: 1; }
+                100% { bottom: 110%; opacity: 0; }
+            }
+
+            @keyframes fadeIn {
+                to { opacity: 1; }
+            }
+
         </style>
     </head>
+
     <body>
-        <div class="box">
-            <h1>🌾 PARTH KISAN SAATHI</h1>
-            <p>AI Powered Farming Assistant for Smart Farmers</p>
-            <button onclick="alert('AI Panel Coming Soon 🚀')">Enter App</button>
+
+        <div class="bow">🏹</div>
+        <div class="arrow">➶</div>
+
+        <div class="center-text">
+            <h1>PARTH'S KISAN SAATHI</h1>
+            <p>Royal Farming Intelligence System</p>
         </div>
+
     </body>
     </html>
     """
