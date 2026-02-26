@@ -14,12 +14,13 @@ def home():
 
 <style>
 
+/* --- Body & Background --- */
 body {
     margin: 0;
     height: 100vh;
-    background: linear-gradient(135deg, #a8e063, #56ab2f, #87ceeb, #fff59d);
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1);
     background-size: 400% 400%;
-    animation: bgMove 15s ease infinite;
+    animation: bgMove 20s ease infinite;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -36,56 +37,61 @@ body {
     100% {background-position: 0% 50%;}
 }
 
-/* Bow + Arrow */
+/* --- Bow + Arrow --- */
 .bow {
     position: absolute;
-    bottom: 10%;
+    bottom: 12%;
     left: 50%;
     transform: translateX(-50%);
-    width: 150px;
+    width: 160px;
 }
 
 .arrow {
     position: absolute;
-    bottom: 18%;
+    bottom: 20%;
     left: 50%;
     transform: translateX(-50%);
-    width: 70px;
+    width: 80px;
     animation: shoot 2.2s ease forwards;
 }
 
 @keyframes shoot {
-    0% { bottom: 18%; opacity: 1; }
+    0% { bottom: 20%; opacity: 1; }
     90% { opacity: 1; }
     100% { bottom: 120%; opacity: 0; }
 }
 
+/* --- Headings & Text --- */
 h1 {
-    font-size: 50px;
+    font-size: 52px;
     margin-top: 20px;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
 }
 
 p {
-    margin-top: 10px;
-    font-size: 18px;
+    margin-top: 12px;
+    font-size: 20px;
     opacity: 0.9;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
 }
 
+/* --- Button --- */
 .enter-btn {
-    margin-top: 35px;
-    padding: 14px 40px;
+    margin-top: 40px;
+    padding: 14px 45px;
     border-radius: 30px;
     border: none;
-    background: white;
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
     color: #2f6f2f;
     font-weight: bold;
     cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     transition: 0.3s;
 }
 
 .enter-btn:hover {
-    background: #f1f1f1;
-    transform: scale(1.05);
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
 
 </style>
@@ -93,9 +99,9 @@ p {
 
 <body>
 
-<!-- Replace these URLs with your actual Gandiv bow and arrow PNG images -->
-<img class="bow" src="https://i.imgur.com/your_bow_image.png" alt="Bow">
-<img class="arrow" src="https://i.imgur.com/your_arrow_image.png" alt="Arrow">
+<!-- Ready-to-use bow + arrow placeholders -->
+<img class="bow" src="https://i.imgur.com/ZlO3lMa.png" alt="Bow">
+<img class="arrow" src="https://i.imgur.com/5v4g2NW.png" alt="Arrow">
 
 <h1>PARTH'S KISAN SAATHI</h1>
 <p>Smart Farming. Better Future.</p>
