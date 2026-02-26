@@ -36,35 +36,20 @@ body {
     100% {background-position: 0% 50%;}
 }
 
-/* --- Bow (curved Gandiv style) --- */
-.bow {
+/* --- Particle Animation (Cinematic) --- */
+.particle {
     position: absolute;
-    bottom: 15%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 14px;
-    height: 200px;
-    border-left: 6px solid #6d4c41;
-    border-radius: 70% 30% 30% 70% / 15% 60% 60% 15%;
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    animation: floatUp 6s linear infinite;
 }
 
-/* --- Arrow (smooth cinematic shoot) --- */
-.arrow {
-    position: absolute;
-    bottom: 22%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 16px;
-    height: 130px;
-    background: linear-gradient(to top, #ffb74d, #ffd54f);
-    clip-path: polygon(50% 0%, 60% 10%, 55% 10%, 60% 20%, 55% 20%, 50% 30%, 45% 20%, 40% 20%, 45% 10%, 40% 10%);
-    animation: shoot 3s ease-in-out forwards;
-}
-
-@keyframes shoot {
-    0% { bottom: 22%; opacity: 1; transform: translateX(-50%) rotate(0deg);}
-    50% { bottom: 80%; opacity: 1; transform: translateX(-50%) rotate(-2deg);}
-    100% { bottom: 150%; opacity: 0; transform: translateX(-50%) rotate(-5deg);}
+@keyframes floatUp {
+    0% {transform: translateY(0) translateX(0);}
+    50% {transform: translateY(-150vh) translateX(50px);}
+    100% {transform: translateY(0) translateX(-50px);}
 }
 
 /* --- Headings & Text --- */
@@ -118,14 +103,15 @@ h2 {
 
 <body>
 
-<!-- Bow Gandiv style -->
-<div class="bow"></div>
-
-<!-- Smooth cinematic animated arrow -->
-<div class="arrow"></div>
+<!-- Particle Elements -->
+<div class="particle" style="top:80%; left:20%; animation-delay:0s;"></div>
+<div class="particle" style="top:90%; left:50%; animation-delay:1s;"></div>
+<div class="particle" style="top:85%; left:70%; animation-delay:2s;"></div>
+<div class="particle" style="top:95%; left:30%; animation-delay:3s;"></div>
+<div class="particle" style="top:88%; left:60%; animation-delay:4s;"></div>
 
 <h1>PARTH'S KISAN SAATHI</h1>
-<h2>Sabka Smart Saathi</h2>
+<h2>Har Kisan Ka Digital Saathi</h2>
 
 <button class="enter-btn">Enter App</button>
 
