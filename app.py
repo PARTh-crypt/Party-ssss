@@ -100,7 +100,7 @@ h2 {
 
 <button class="enter-btn" onclick="alert('Next screen loading...')">Enter App</button>
 
-<div class="footer">Powered by PARTH'S INDUSTRIES</div>
+<div class="footer">Powered by PARTH'S</div>
 
 </body>
 </html>
