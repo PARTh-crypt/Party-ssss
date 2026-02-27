@@ -85,6 +85,7 @@ body{
     flex-direction:column;
     min-height:100vh;
     text-align:center;
+    padding-top:40px;
 }
 
 @keyframes bgMove {
@@ -97,15 +98,18 @@ body{
     background:rgba(0,0,0,0.35);
     padding:30px;
     width:100%;
+    max-width:500px;
+    margin:auto;
+    border-radius:15px;
 }
 
 /* Headings */
 h1{ font-family:'Playfair Display', serif; font-size:48px; margin:0; padding:10px; text-shadow:2px 2px 8px rgba(0,0,0,0.4); }
 h2{ font-size:24px; margin:0; padding:5px; text-shadow:1px 1px 6px rgba(0,0,0,0.3); }
 
-/* Buttons */
+/* Buttons vertical */
 .cat-btn{
-    margin:12px;
+    margin:12px 0;
     padding:18px 30px;
     border-radius:25px;
     border:none;
@@ -116,21 +120,19 @@ h2{ font-size:24px; margin:0; padding:5px; text-shadow:1px 1px 6px rgba(0,0,0,0.
     cursor:pointer;
     text-shadow:1px 1px 3px rgba(0,0,0,0.4);
     transition:0.3s;
+    width:100%;
 }
 .cat-btn:hover{
     background:rgba(255,255,255,0.45);
-    transform:scale(1.05);
+    transform:scale(1.03);
 }
 
-/* Button grid */
 .button-container{
-    margin-top:40px;
-    display:grid;
-    grid-template-columns: repeat(4, auto);
-    justify-content:center;
-    gap:15px;
+    margin-top:30px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
-
 </style>
 </head>
 <body>
@@ -143,14 +145,12 @@ h2{ font-size:24px; margin:0; padding:5px; text-shadow:1px 1px 6px rgba(0,0,0,0.
     <button class="cat-btn" onclick="alert('Category 2 – Irrigation Management / सिंचाई प्रबंधन')">💧 Irrigation Management / सिंचाई प्रबंधन</button>
     <button class="cat-btn" onclick="alert('Category 3 – Pest & Disease Control / कीट एवं रोग नियंत्रण')">🦠 Pest & Disease Control / कीट एवं रोग नियंत्रण</button>
     <button class="cat-btn" onclick="alert('Category 4 – Organic & AI Farming / ऑर्गेनिक & एआई खेती')">🌱 Organic & AI Farming / ऑर्गेनिक & एआई खेती</button>
-    
     <button class="cat-btn" onclick="alert('Category 5 – Fertilizer Planning / उर्वरक योजना')">🧴 Fertilizer Planning / उर्वरक योजना</button>
     <button class="cat-btn" onclick="alert('Category 6 – Seed Management / बीज प्रबंधन')">🌾 Seed Management / बीज प्रबंधन</button>
     <button class="cat-btn" onclick="alert('Category 7 – Profit & Yield Tracking / लाभ & उत्पादन ट्रैकिंग')">📊 Profit & Yield Tracking / लाभ & उत्पादन ट्रैकिंग</button>
     <button class="cat-btn" onclick="alert('Category 8 – Smart Farming Tools / स्मार्ट खेती उपकरण')">💻 Smart Farming Tools / स्मार्ट खेती उपकरण</button>
-    
-    <button class="cat-btn" onclick="alert('Category 9 – Crop Calendar / फ़सल कैलेंडर')">📅 Crop Calendar / फ़सल कैलेंडर</button>
-    <button class="cat-btn" onclick="alert('Category 10 – Farm Maintenance Tools / खेत रखरखाव उपकरण')">🛠️ Farm Maintenance Tools / खेत रखरखाव उपकरण</button>
+    <button class="cat-btn" onclick="alert('Category 9 – Harvesting & Guidance / कटाई & मार्गदर्शन')">🌾 Harvesting & Guidance / कटाई & मार्गदर्शन</button>
+    <button class="cat-btn" onclick="alert('Category 10 – Soil & Crop Care / मिट्टी & फ़सल देखभाल')">🛠️ Soil & Crop Care / मिट्टी & फ़सल देखभाल</button>
     <button class="cat-btn" onclick="alert('Category 11 – Reminders & Notes / रिमाइंडर & नोट्स')">📌 Reminders & Notes / रिमाइंडर & नोट्स</button>
 </div>
 </div>
