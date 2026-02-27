@@ -227,3 +227,75 @@ h2{
 </body>
 </html>
 """
+@app.route("/dashboard")
+def dashboard():
+    return """
+<!DOCTYPE html>
+<html>
+<head>
+<title>PARTH'S KISAN SAATHI - Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<style>
+body{
+    margin:0;
+    font-family:'Montserrat',sans-serif;
+    background: linear-gradient(135deg, #a8e063, #fdd835); /* Colour background */
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    flex-direction:column;
+    min-height:100vh;
+    text-align:center;
+}
+.overlay{
+    background:rgba(0,0,0,0.4);
+    padding:30px;
+    width:100%;
+}
+h1{ font-family:'Playfair Display', serif; font-size:48px; margin:0; padding:10px; text-shadow:2px 2px 8px rgba(0,0,0,0.4); }
+h2{ font-size:24px; margin:0; padding:5px; text-shadow:1px 1px 6px rgba(0,0,0,0.3); }
+
+/* --- Category Buttons --- */
+.cat-btn{
+    margin:15px;
+    padding:20px 40px;
+    border-radius:25px;
+    border:none;
+    background:rgba(255,255,255,0.2);
+    color:white;
+    font-weight:bold;
+    font-size:18px;
+    cursor:pointer;
+    text-shadow:1px 1px 3px rgba(0,0,0,0.4);
+    transition:0.3s;
+}
+.cat-btn:hover{
+    background:rgba(255,255,255,0.4);
+    transform:scale(1.05);
+}
+.button-container{
+    margin-top:50px;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+</style>
+</head>
+<body>
+<div class="overlay">
+<h1>PARTH'S KISAN SAATHI</h1>
+<h2>Dashboard / डैशबोर्ड</h2>
+
+<div class="button-container">
+    <button class="cat-btn" onclick="alert('Category 1 – Crop Management / फ़सल प्रबंधन')">🌾 Crop Management / फ़सल प्रबंधन</button>
+    <button class="cat-btn" onclick="alert('Category 2 – Irrigation Management / सिंचाई प्रबंधन')">💧 Irrigation Management / सिंचाई प्रबंधन</button>
+    <button class="cat-btn" onclick="alert('Category 3 – Pest & Disease Control / कीट एवं रोग नियंत्रण')">🦠 Pest & Disease Control / कीट एवं रोग नियंत्रण</button>
+    <button class="cat-btn" onclick="alert('Category 4 – Organic & AI Farming / ऑर्गेनिक & एआई खेती')">🌱 Organic & AI Farming / ऑर्गेनिक & एआई खेती</button>
+    <button class="cat-btn" onclick="alert('Category 5 – Fertilizer Planning / उर्वरक योजना')">🧴 Fertilizer Planning / उर्वरक योजना</button>
+    <button class="cat-btn" onclick="alert('Category 6 – Seed Management / बीज प्रबंधन')">🌾 Seed Management / बीज प्रबंधन</button>
+</div>
+</div>
+</body>
+</html>
+"""
