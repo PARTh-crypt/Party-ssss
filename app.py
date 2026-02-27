@@ -157,22 +157,3 @@ h2{ font-size:24px; margin:0; padding:5px; text-shadow:1px 1px 6px rgba(0,0,0,0.
 </body>
 </html>
 """
-from flask import Flask
-
-app = Flask(__name__)
-
-# =============================
-# Category 1 Tools – Crop Management
-# =============================
-category1_tools = [
-    {"name": "Soil Type / मिट्टी का प्रकार", "theory": "Soil type affects crop growth. / मिट्टी का प्रकार फ़सल की वृद्धि को प्रभावित करता है।", "practical": "Take a soil sample photo and send. / मिट्टी का नमूना फोटो खींच कर भेजें।"},
-    {"name": "Crop Rotation / फ़सल चक्र", "theory": "Rotate crops to improve soil fertility. / मिट्टी की उर्वरता बढ़ाने के लिए फ़सल बदलें।", "practical": "Select crops to rotate. / बदलने के लिए फ़सल चुनें।"},
-    {"name": "Planting Time / रोपाई का समय", "theory": "Plant crops at the right season. / सही मौसम में फ़सल लगाएँ।", "practical": "Select crop and season. / फ़सल और मौसम चुनें।"},
-    {"name": "Fertilizer Use / उर्वरक का उपयोग", "theory": "Use proper fertilizers for crops. / फ़सल के लिए सही उर्वरक का उपयोग करें।", "practical": "Upload soil report photo. / मिट्टी रिपोर्ट फोटो अपलोड करें।"},
-    {"name": "Pest Monitoring / कीट निगरानी", "theory": "Monitor pests regularly. / कीटों की निगरानी करें।", "practical": "Upload pest affected plant photo. / प्रभावित पौधे का फोटो भेजें।"},
-    {"name": "Irrigation Schedule / सिंचाई कार्यक्रम", "theory": "Maintain proper irrigation. / सही सिंचाई करें।", "practical": "Select field and water schedule. / खेत और पानी का समय चुनें।"},
-    {"name": "Seed Selection / बीज चयन", "theory": "Choose high-quality seeds. / उच्च गुणवत्ता वाले बीज चुनें।", "practical": "Upload seed package photo. / बीज पैकेज का फोटो भेजें।"},
-    {"name": "Harvesting Time / कटाई का समय", "theory": "Harvest at peak maturity. / फ़सल पकने पर काटें।", "practical": "Select crop and harvest date. / फ़सल और कटाई तारीख चुनें।"},
-    {"name": "Weed Control / खरपतवार नियंत्रण", "theory": "Remove weeds regularly. / खरपतवार नियमित रूप से निकालें।", "practical": "Upload field photo. / खेत का फोटो भेजें।"},
-    {"name": "Yield Prediction / उत्पादन अनुमान", "theory": "Estimate expected crop yield. / फ़सल की अनुमानित पैदावार का आकलन करें।", "practical": "Enter crop area & conditions. / फ़सल क्षेत्र और स्थिति दर्ज करें।"}
-]
