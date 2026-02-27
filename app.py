@@ -116,8 +116,8 @@ h2 {
 
 <button class="enter-btn">Enter App</button>
 
-<div class="footer">Powered by PARTH'S</div>
+<div class="footer">Powered by PARTH'S INDUSTRIES</div>
 
 </body>
 </html>
-""")
+"""
