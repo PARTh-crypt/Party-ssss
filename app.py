@@ -159,209 +159,155 @@ h2{ font-size:24px; margin:0; padding:5px; text-shadow:1px 1px 6px rgba(0,0,0,0.
 </body>
 </html>
 """
-from flask import Flask, request, render_template_string
+    from flask import Flask, render_template_string, request
 
 app = Flask(__name__)
 
-# ==============================
-# Category 1 – Crop Management Tools
-# ==============================
+# ------------------ CATEGORY 1 DATA ------------------
+category1_tools = [
+    {
+        "name": "🌾 Soil Type Analyzer / मिट्टी प्रकार विश्लेषक",
+        "theory": "Soil type affects crop growth. Sandy soil drains quickly, clay retains water, loamy is ideal.",
+        "practical": "Upload soil photo to identify texture.",
+    },
+    {
+        "name": "💧 Moisture Detector / नमी पता लगाने वाला",
+        "theory": "Soil moisture determines irrigation need. Overwatering harms crops.",
+        "practical": "Enter soil moisture % or attach photo of soil surface.",
+    },
+    {
+        "name": "🌤 Sunlight Checker / धूप मापने वाला",
+        "theory": "Crops need sunlight. Too little sunlight reduces yield.",
+        "practical": "Check sunlight hours at field; use camera photo of field shadow.",
+    },
+    {
+        "name": "🌱 Germination Helper / अंकुरण सहायता",
+        "theory": "Seeds require optimum water, soil and temperature to germinate.",
+        "practical": "Enter seed type & moisture; app advises best method.",
+    },
+    {
+        "name": "🧴 Fertilizer Advisor / उर्वरक सलाहकार",
+        "theory": "Proper fertilizer improves yield; excess harms soil.",
+        "practical": "Enter crop type & soil condition; app recommends fertilizer.",
+    },
+    {
+        "name": "🛠️ Crop Maintenance Tips / फसल रखरखाव सुझाव",
+        "theory": "Regular weeding, pruning, pest checks improve growth.",
+        "practical": "Upload field photo; app highlights areas to care.",
+    },
+    {
+        "name": "🚜 Planting Scheduler / रोपाई समय सारणी",
+        "theory": "Planting at right season increases yield.",
+        "practical": "Enter crop & local season; app suggests sowing date.",
+    },
+    {
+        "name": "📝 Growth Tracker / विकास ट्रैकर",
+        "theory": "Track plant height, leaf color for healthy growth.",
+        "practical": "Enter weekly observations; app advises interventions.",
+    },
+    {
+        "name": "💨 Wind Exposure Advisor / हवा के प्रभाव की सलाह",
+        "theory": "Wind can damage crops; use shelter or fencing.",
+        "practical": "Enter location & crop; app suggests precautions.",
+    },
+    {
+        "name": "🌾 Harvesting Guide / फसल कटाई मार्गदर्शक",
+        "theory": "Harvest at peak maturity for best yield.",
+        "practical": "Enter crop type & visual photo; app advises harvest time.",
+    },
+]
 
-# 1️⃣ Soil Type Identifier
-soil_tool_html = """
-<div style='margin:15px;padding:15px;background:rgba(255,255,255,0.15);border-radius:15px;text-align:left;'>
-<h3>🌱 Soil Type Identifier / मिट्टी प्रकार पहचान</h3>
-<p><b>Theory / सिद्धांत:</b> मिट्टी की पहचान से फ़सल और उर्वरक का सही चयन आसान होता है।</p>
-<p><b>Practical / प्रयोग:</b> खेत से मिट्टी की फोटो लें और नीचे upload करें। App बताएगा मिट्टी का type।</p>
-<form action="/analyze_soil" method="post" enctype="multipart/form-data">
-<input type="file" name="soil_photo" accept="image/*" required>
-<button type="submit">Analyze / विश्लेषण करें</button>
-</form>
-</div>
-"""
-
-# 2️⃣ Water Requirement Checker
-water_tool_html = """
-<div style='margin:15px;padding:15px;background:rgba(255,255,255,0.15);border-radius:15px;text-align:left;'>
-<h3>💧 Water Requirement Checker / पानी की आवश्यकता जांच</h3>
-<p><b>Theory / सिद्धांत:</b> फ़सल को सही मात्रा में पानी देने से उत्पादन बेहतर होता है।</p>
-<p><b>Practical / प्रयोग:</b> खेत की फोटो या नमी देखकर input दें। App बताएगा पानी की आवश्यकता।</p>
-<form method="post" action="/check_water">
-<label>Soil Moisture % / मिट्टी नमी %:</label>
-<input type="number" name="moisture" min="0" max="100" required>
-<button type="submit">Check / जाँच करें</button>
-</form>
-</div>
-"""
-
-# 3️⃣ Fertilizer Suggestion
-fert_tool_html = """
-<div style='margin:15px;padding:15px;background:rgba(255,255,255,0.15);border-radius:15px;text-align:left;'>
-<h3>🧴 Fertilizer Suggestion / उर्वरक सुझाव</h3>
-<p><b>Theory / सिद्धांत:</b> सही उर्वरक से फ़सल उत्पादन बढ़ता है।</p>
-<p><b>Practical / प्रयोग:</b> फ़सल का नाम डालें और App बताएगा recommended fertilizer।</p>
-<form method="post" action="/fert_suggest">
-<label>Crop Name / फ़सल का नाम:</label>
-<input type="text" name="crop" required>
-<button type="submit">Get Suggestion / सुझाव देखें</button>
-</form>
-</div>
-"""
-
-# 4️⃣ Pest Identifier
-pest_tool_html = """
-<div style='margin:15px;padding:15px;background:rgba(255,255,255,0.15);border-radius:15px;text-align:left;'>
-<h3>🐛 Pest Identifier / कीट पहचान</h3>
-<p><b>Theory / सिद्धांत:</b> फ़सल में कीट का समय पर पता लगाने से नुकसान कम होता है।</p>
-<p><b>Practical / प्रयोग:</b> पौधे की फोटो upload करें। App बताएगा कीट का नाम और नियंत्रण।</p>
-<form action="/analyze_pest" method="post" enctype="multipart/form-data">
-<input type="file" name="pest_photo" accept="image/*" required>
-<button type="submit">Analyze / विश्लेषण करें</button>
-</form>
-</div>
-"""
-
-# 5️⃣ Growth Stage Tracker
-growth_tool_html = """
-<div style='margin:15px;padding:15px;background:rgba(255,255,255,0.15);border-radius:15px;text-align:left;'>
-<h3>🌿 Growth Stage Tracker / वृद्धि चरण ट्रैकर</h3>
-<p><b>Theory / सिद्धांत:</b> फ़सल की वृद्धि चरण जानना फ़सल प्रबंधन के लिए जरूरी है।</p>
-<p><b>Practical / प्रयोग:</b> पौधे की फोटो भेजें, App बताएगा stage और next steps।</p>
-<form action="/analyze_growth" method="post" enctype="multipart/form-data">
-<input type="file" name="growth_photo" accept="image/*" required>
-<button type="submit">Analyze / विश्लेषण करें</button>
-</form>
-</div>
-"""
-
-# 6️⃣ Harvest Time Predictor
-harvest_tool_html = """
-<div style='margin:15px;padding:15px;background:rgba(255,255,255,0.15);border-radius:15px;text-align:left;'>
-<h3>🌾 Harvest Time Predictor / कटाई समय अनुमान</h3>
-<p><b>Theory / सिद्धांत:</b> सही समय पर कटाई से गुणवत्ता और उत्पादन बेहतर होता है।</p>
-<p><b>Practical / प्रयोग:</b> फ़सल की फोटो upload करें। App बताएगा कटाई का समय।</p>
-<form action="/analyze_harvest" method="post" enctype="multipart/form-data">
-<input type="file" name="harvest_photo" accept="image/*" required>
-<button type="submit">Analyze / विश्लेषण करें</button>
-</form>
-</div>
-"""
-
-# 7️⃣ Soil PH Checker
-ph_tool_html = """
-<div style='margin:15px;padding:15px;background:rgba(255,255,255,0.15);border-radius:15px;text-align:left;'>
-<h3>🧪 Soil PH Checker / मिट्टी पीएच जांच</h3>
-<p><b>Theory / सिद्धांत:</b> पीएच संतुलन से फ़सल की वृद्धि और उर्वरक प्रभाव बढ़ता है।</p>
-<p><b>Practical / प्रयोग:</b> मिट्टी की फोटो या manual input दें। App बताएगा PH level।</p>
-<form method="post" action="/check_ph">
-<label>PH Value / पीएच मान:</label>
-<input type="number" name="ph" step="0.1" required>
-<button type="submit">Check / जाँच करें</button>
-</form>
-</div>
-"""
-
-# 8️⃣ Sunlight Requirement
-sun_tool_html = """
-<div style='margin:15px;padding:15px;background:rgba(255,255,255,0.15);border-radius:15px;text-align:left;'>
-<h3>☀ Sunlight Requirement / धूप की आवश्यकता</h3>
-<p><b>Theory / सिद्धांत:</b> फ़सल की सही धूप से वृद्धि बेहतर होती है।</p>
-<p><b>Practical / प्रयोग:</b> खेत की फोटो भेजें। App बताएगा sunlight adequacy।</p>
-<form action="/check_sunlight" method="post" enctype="multipart/form-data">
-<input type="file" name="sun_photo" accept="image/*" required>
-<button type="submit">Analyze / विश्लेषण करें</button>
-</form>
-</div>
-"""
-
-# 9️⃣ Weed Detection
-weed_tool_html = """
-<div style='margin:15px;padding:15px;background:rgba(255,255,255,0.15);border-radius:15px;text-align:left;'>
-<h3>🌾 Weed Detection / खरपतवार पहचान</h3>
-<p><b>Theory / सिद्धांत:</b> खेत से खरपतवार हटाने से फ़सल सुरक्षित रहती है।</p>
-<p><b>Practical / प्रयोग:</b> खेत की फोटो upload करें। App बताएगा weeds और control।</p>
-<form action="/analyze_weed" method="post" enctype="multipart/form-data">
-<input type="file" name="weed_photo" accept="image/*" required>
-<button type="submit">Analyze / विश्लेषण करें</button>
-</form>
-</div>
-"""
-
-# 🔟 Crop Disease Checker
-disease_tool_html = """
-<div style='margin:15px;padding:15px;background:rgba(255,255,255,0.15);border-radius:15px;text-align:left;'>
-<h3>🦠 Crop Disease Checker / फ़सल रोग जांच</h3>
-<p><b>Theory / सिद्धांत:</b> रोग पहचान से फ़सल की सुरक्षा सुनिश्चित होती है।</p>
-<p><b>Practical / प्रयोग:</b> पौधे की फोटो upload करें। App बताएगा रोग और नियंत्रण।</p>
-<form action="/analyze_disease" method="post" enctype="multipart/form-data">
-<input type="file" name="disease_photo" accept="image/*" required>
-<button type="submit">Analyze / विश्लेषण करें</button>
-</form>
-</div>
-"""
-
-# Combine all tools
-tools_html = soil_tool_html + water_tool_html + fert_tool_html + pest_tool_html + growth_tool_html + harvest_tool_html + ph_tool_html + sun_tool_html + weed_tool_html + disease_tool_html
-
-@app.route("/category1")
-def category1():
+# ------------------ DASHBOARD ------------------
+@app.route("/")
+def dashboard():
     return render_template_string("""
+<!DOCTYPE html>
 <html>
-<head><title>Category 1 – Crop Management</title></head>
-<body style="font-family:Arial;background:#87ceeb;padding:20px;">
-<h1>🌾 Crop Management / फ़सल प्रबंधन</h1>
-{{ tools|safe }}
+<head>
+<title>PARTH'S KISAN SAATHI - Dashboard</title>
+<style>
+body{
+    font-family:sans-serif;
+    margin:0; padding:0;
+    background: linear-gradient(135deg,#87ceeb,#a8e063,#ffffff,#fff176);
+    min-height:100vh;
+    display:flex; justify-content:center; align-items:flex-start;
+}
+.overlay{
+    background:rgba(0,0,0,0.3); padding:20px; width:90%; margin-top:20px;
+}
+h1,h2{text-align:center;color:white;text-shadow:1px 1px 4px #000;}
+.button-container{
+    display:flex; flex-direction:column; align-items:center; gap:12px; margin-top:20px;
+}
+.cat-btn{
+    width:80%; padding:15px; font-size:18px; border:none; border-radius:20px;
+    background:rgba(255,255,255,0.25); color:white; cursor:pointer;
+    text-align:left; transition:0.3s;
+}
+.cat-btn:hover{background:rgba(255,255,255,0.45); transform:scale(1.03);}
+</style>
+<script>
+function openCategory(url){
+    window.location.href = url;
+}
+</script>
+</head>
+<body>
+<div class="overlay">
+<h1>PARTH'S KISAN SAATHI</h1>
+<h2>Dashboard / डैशबोर्ड</h2>
+<div class="button-container">
+    <button class="cat-btn" onclick="openCategory('/category1')">🌾 Category 1 – Crop Management / फ़सल प्रबंधन</button>
+    <button class="cat-btn" onclick="alert('Category 2 – Irrigation Management / सिंचाई प्रबंधन')">💧 Category 2</button>
+    <button class="cat-btn" onclick="alert('Category 3 – Pest & Disease Control / कीट एवं रोग नियंत्रण')">🦠 Category 3</button>
+    <button class="cat-btn" onclick="alert('Category 4 – Organic & AI Farming / ऑर्गेनिक & एआई खेती')">🌱 Category 4</button>
+    <button class="cat-btn" onclick="alert('Category 5 – Fertilizer Planning / उर्वरक योजना')">🧴 Category 5</button>
+    <button class="cat-btn" onclick="alert('Category 6 – Seed Management / बीज प्रबंधन')">🌾 Category 6</button>
+    <button class="cat-btn" onclick="alert('Category 7 – Profit & Yield Tracking / लाभ & उत्पादन ट्रैकिंग')">📊 Category 7</button>
+    <button class="cat-btn" onclick="alert('Category 8 – Smart Farming Tools / स्मार्ट खेती उपकरण')">💻 Category 8</button>
+    <button class="cat-btn" onclick="alert('Category 9 – Crop Calendar / फ़सल कैलेंडर')">📅 Category 9</button>
+    <button class="cat-btn" onclick="alert('Category 10 – Farm Maintenance / खेत रखरखाव')">🛠️ Category 10</button>
+    <button class="cat-btn" onclick="alert('Category 11 – Reminders & Notes / रिमाइंडर & नोट्स')">📌 Category 11</button>
+</div>
+</div>
 </body>
 </html>
-""", tools=tools_html)
+""")
 
+# ------------------ CATEGORY 1 PAGE ------------------
+@app.route("/category1", methods=["GET", "POST"])
+def category1():
+    return render_template_string("""
+<!DOCTYPE html>
+<html>
+<head>
+<title>Category 1 – Crop Management</title>
+<style>
+body{font-family:sans-serif; margin:0; padding:0; background:#87ceeb; color:#000;}
+.container{padding:20px; max-width:900px; margin:auto;}
+h1,h2{text-align:center;}
+.tool-card{background:rgba(255,255,255,0.8); padding:15px; margin:15px 0; border-radius:15px;}
+textarea,input{width:100%; padding:8px; margin:5px 0; border-radius:8px;}
+button{padding:10px 20px; border:none; border-radius:15px; background:#4caf50; color:white; cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🌾 Category 1 – Crop Management / फ़सल प्रबंधन</h1>
+<h2>Select a tool / टूल चुनें</h2>
+{% for tool in tools %}
+<div class="tool-card">
+<h3>{{tool.name}}</h3>
+<p><b>Theory / सिद्धांत:</b> {{tool.theory}}</p>
+<p><b>Practical / व्यावहारिक:</b> {{tool.practical}}</p>
+</div>
+{% endfor %}
+</div>
+</body>
+</html>
+""", tools=category1_tools)
 
-# ==============================
-# Example server-side logic for placeholder analysis
-# ==============================
-@app.route("/analyze_soil", methods=["POST"])
-def analyze_soil():
-    return "<h2>Soil Type: Loamy / दोमट मिट्टी</h2><a href='/category1'>⬅ Back</a>"
-
-@app.route("/check_water", methods=["POST"])
-def check_water():
-    moisture = int(request.form.get("moisture",0))
-    if moisture < 40:
-        msg = "Water Needed / पानी चाहिए"
-    else:
-        msg = "Water Sufficient / पानी पर्याप्त है"
-    return f"<h2>{msg}</h2><a href='/category1'>⬅ Back</a>"
-
-@app.route("/fert_suggest", methods=["POST"])
-def fert_suggest():
-    crop = request.form.get("crop","Unknown")
-    return f"<h2>Recommended Fertilizer for {crop}: Nitrogen-based / {crop} के लिए नाइट्रोजन आधारित उर्वरक</h2><a href='/category1'>⬅ Back</a>"
-
-@app.route("/analyze_pest", methods=["POST"])
-def analyze_pest():
-    return "<h2>Pest Identified: Aphids / कीट: एफिड्स</h2><a href='/category1'>⬅ Back</a>"
-
-@app.route("/analyze_growth", methods=["POST"])
-def analyze_growth():
-    return "<h2>Growth Stage: Vegetative / वृद्धि चरण: पत्तेदार</h2><a href='/category1'>⬅ Back</a>"
-
-@app.route("/analyze_harvest", methods=["POST"])
-def analyze_harvest():
-    return "<h2>Harvest Time: 5-7 days / कटाई का समय: 5-7 दिन</h2><a href='/category1'>⬅ Back</a>"
-
-@app.route("/check_ph", methods=["POST"])
-def check_ph():
-    ph = float(request.form.get("ph",7))
-    return f"<h2>Soil PH: {ph}</h2><a href='/category1'>⬅ Back</a>"
-
-@app.route("/check_sunlight", methods=["POST"])
-def check_sunlight():
-    return "<h2>Sunlight Adequacy: Sufficient / धूप पर्याप्त है</h2><a href='/category1'>⬅ Back</a>"
-
-@app.route("/analyze_weed", methods=["POST"])
-def analyze_weed():
-    return "<h2>Weeds Detected / खरपतवार पाया गया</h2><a href='/category1'>⬅ Back</a>"
-
-@app.route("/analyze_disease", methods=["POST"])
-def analyze_disease():
-    return "<h2>Disease Detected: Fungal / रोग: फंगल</h2><a href='/category1'>⬅ Back</a>"
+# ------------------ RUN ------------------
+if __name__ == "__main__":
+    app.run(debug=True)
