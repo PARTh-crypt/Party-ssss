@@ -61,5 +61,5 @@ h2 {
 <h2>Har Kisan Ka Digital Saathi</h2>
 <button class="enter-btn" onclick="window.location.href='/dashboard'">Enter App / ऐप में प्रवेश करें</button>
 </body>
-</html>
+</html> 
 """
