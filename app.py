@@ -157,137 +157,77 @@ h2{ font-size:24px; margin:0; padding:5px; text-shadow:1px 1px 6px rgba(0,0,0,0.
 </body>
 </html>
 """
+from flask import Flask
+
+app = Flask(__name__)
+
+# =============================
+# Category 1 Tools – Crop Management
+# =============================
+category1_tools = [
+    {"name": "Soil Type / मिट्टी का प्रकार", "theory": "Soil type affects crop growth. / मिट्टी का प्रकार फ़सल की वृद्धि को प्रभावित करता है।", "practical": "Take a soil sample photo and send. / मिट्टी का नमूना फोटो खींच कर भेजें।"},
+    {"name": "Crop Rotation / फ़सल चक्र", "theory": "Rotate crops to improve soil fertility. / मिट्टी की उर्वरता बढ़ाने के लिए फ़सल बदलें।", "practical": "Select crops to rotate. / बदलने के लिए फ़सल चुनें।"},
+    {"name": "Planting Time / रोपाई का समय", "theory": "Plant crops at the right season. / सही मौसम में फ़सल लगाएँ।", "practical": "Select crop and season. / फ़सल और मौसम चुनें।"},
+    {"name": "Fertilizer Use / उर्वरक का उपयोग", "theory": "Use proper fertilizers for crops. / फ़सल के लिए सही उर्वरक का उपयोग करें।", "practical": "Upload soil report photo. / मिट्टी रिपोर्ट फोटो अपलोड करें।"},
+    {"name": "Pest Monitoring / कीट निगरानी", "theory": "Monitor pests regularly. / कीटों की निगरानी करें।", "practical": "Upload pest affected plant photo. / प्रभावित पौधे का फोटो भेजें।"},
+    {"name": "Irrigation Schedule / सिंचाई कार्यक्रम", "theory": "Maintain proper irrigation. / सही सिंचाई करें।", "practical": "Select field and water schedule. / खेत और पानी का समय चुनें।"},
+    {"name": "Seed Selection / बीज चयन", "theory": "Choose high-quality seeds. / उच्च गुणवत्ता वाले बीज चुनें।", "practical": "Upload seed package photo. / बीज पैकेज का फोटो भेजें।"},
+    {"name": "Harvesting Time / कटाई का समय", "theory": "Harvest at peak maturity. / फ़सल पकने पर काटें।", "practical": "Select crop and harvest date. / फ़सल और कटाई तारीख चुनें।"},
+    {"name": "Weed Control / खरपतवार नियंत्रण", "theory": "Remove weeds regularly. / खरपतवार नियमित रूप से निकालें।", "practical": "Upload field photo. / खेत का फोटो भेजें।"},
+    {"name": "Yield Prediction / उत्पादन अनुमान", "theory": "Estimate expected crop yield. / फ़सल की अनुमानित पैदावार का आकलन करें।", "practical": "Enter crop area & conditions. / फ़सल क्षेत्र और स्थिति दर्ज करें।"}
+]
+
 @app.route("/category1")
 def category1():
-    return """
+    buttons_html = ""
+    for i, tool in enumerate(category1_tools):
+        buttons_html += f"""
+        <button onclick="alert('Tool: {tool['name']}\\n\\nTheory: {tool['theory']}\\n\\nPractical: {tool['practical']}')">{i+1}. {tool['name']}</button><br><br>
+        """
+
+    return f"""
 <!DOCTYPE html>
 <html>
 <head>
-<title>PARTH'S KISAN SAATHI - Crop Management</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<title>Category 1 – Crop Management</title>
 <style>
-body{
-    margin:0;
-    font-family:'Montserrat',sans-serif;
+body {{
+    font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #87ceeb, #a8e063, #fff176, #ffffff);
-    background-size:400% 400%;
-    animation:bgMove 20s ease infinite;
-    color:#fff;
-    display:flex;
-    justify-content:flex-start;
-    align-items:center;
-    flex-direction:column;
-    min-height:100vh;
-    text-align:center;
-    padding-top:30px;
-}
-@keyframes bgMove {
-    0% {background-position:0% 50%;}
-    50% {background-position:100% 50%;}
-    100% {background-position:0% 50%;}
-}
-h1{ font-family:'Playfair Display', serif; font-size:48px; margin:0; padding:10px; text-shadow:2px 2px 8px rgba(0,0,0,0.4); }
-h2{ font-size:24px; margin:0; padding:5px; text-shadow:1px 1px 6px rgba(0,0,0,0.3); }
-
-.cat-btn{
-    margin:12px;
-    padding:18px 30px;
-    border-radius:25px;
-    border:none;
-    background:rgba(255,255,255,0.25);
-    color:white;
-    font-weight:bold;
-    font-size:18px;
-    cursor:pointer;
-    text-shadow:1px 1px 3px rgba(0,0,0,0.4);
-    transition:0.3s;
-}
-.cat-btn:hover{
-    background:rgba(255,255,255,0.45);
-    transform:scale(1.05);
-}
-
-#tools-section{
-    margin-top:30px;
-    padding:20px;
-    width:80%;
-    max-width:700px;
-    background:rgba(0,128,0,0.15);
-    border-radius:15px;
-    text-align:left;
-}
-#tools-section h3{ color:#2f6f2f; }
-#tools-section ul{ list-style:disc; margin-left:20px; }
-
-#practical{
-    margin-top:20px;
-}
-.q-block{
-    background:rgba(255,255,255,0.15);
-    padding:15px;
-    border-radius:12px;
-    margin-bottom:15px;
-}
-.option-btn{
-    display:block;
-    width:100%;
-    margin:8px 0;
-    padding:10px;
-    border:none;
-    border-radius:8px;
-    background:rgba(255,255,255,0.25);
-    color:white;
-    font-weight:bold;
-    cursor:pointer;
-    transition:0.3s;
-}
-.option-btn:hover{
-    background:rgba(255,255,255,0.45);
-}
+    color: #000;
+    text-align: center;
+    padding: 30px;
+}}
+h1 {{ text-shadow: 1px 1px 4px rgba(0,0,0,0.3); }}
+button {{
+    padding: 15px 25px;
+    margin: 10px;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    background: rgba(255,255,255,0.3);
+    transition: 0.3s;
+}}
+button:hover {{ background: rgba(255,255,255,0.6); transform: scale(1.05); }}
 </style>
 </head>
 <body>
-
-<h1>PARTH'S KISAN SAATHI</h1>
-<h2>Category 1 – Crop Management / फ़सल प्रबंधन</h2>
-
-<div id="tools-section">
-    <h3>Theory / Tools:</h3>
-    <ul>
-        <li>Soil Type Analysis / मिट्टी प्रकार विश्लेषण</li>
-        <li>Sowing Techniques / बुवाई तकनीक</li>
-        <li>Fertilizer Usage / उर्वरक उपयोग</li>
-        <li>Water Requirement Tips / पानी की आवश्यकता सुझाव</li>
-        <li>Crop Rotation Planning / फ़सल घुमाव योजना</li>
-        <li>Pest Management / कीट प्रबंधन</li>
-        <li>Disease Control / रोग नियंत्रण</li>
-        <li>Harvesting Guidelines / कटाई के दिशा-निर्देश</li>
-        <li>Storage Techniques / भंडारण तकनीक</li>
-        <li>Market Planning / बाजार योजना</li>
-    </ul>
-</div>
-
-<div id="practical">
-    <h3>Practical / व्यावहारिक</h3>
-    
-    <!-- Question 1 -->
-    <div class="q-block">
-        <p>1️⃣ Soil Type Identification / मिट्टी प्रकार पहचानें</p>
-        <button class="option-btn" onclick="alert('Clay Soil / चिकनी मिट्टी – Moderate water retention / मध्यम जल धारण')">Clay / चिकनी</button>
-        <button class="option-btn" onclick="alert('Sandy Soil / रेतीली मिट्टी – Fast drainage / तेज जल निकासी')">Sandy / रेतीली</button>
-        <button class="option-btn" onclick="alert('Loamy Soil / दोमट मिट्टी – Fertile & balanced / उर्वरक & संतुलित')">Loamy / दोमट</button>
-        <button class="option-btn" onclick="alert('Silty Soil / सिल्टी मिट्टी – Smooth texture / चिकनी बनावट')">Silty / सिल्टी</button>
-    </div>
-    
-    <!-- Question 2 -->
-    <div class="q-block">
-        <p>2️⃣ Best Sowing Season / सबसे अच्छा बुवाई मौसम</p>
-        <button class="option-btn" onclick="alert('Rabi Crops / रबी फसल – Oct to Dec / अक्टूबर से दिसम्बर')">Rabi / रबी</button>
-        <button class="option-btn" onclick="alert('Kharif Crops / खरीफ फसल – June to Sep / जून से सितम्बर')">Kharif / खरीफ</button>
-    </div>
-
-</div>
-
+<h1>Category 1 – Crop Management / फ़सल प्रबंधन</h1>
+{buttons_html}
 </body>
 </html>
 """
+
+# =============================
+# Home route for testing
+# =============================
+@app.route("/")
+def home():
+    return "<h1>PARTH'S KISAN SAATHI</h1><a href='/category1'>Go to Category 1 Tools</a>"
+
+# =============================
+# Run server
+# =============================
+if __name__ == "__main__":
+    app.run(debug=True) 
