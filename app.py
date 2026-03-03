@@ -172,44 +172,130 @@ h2{
 @app.route("/tool/<int:id>")
 def tool(id):
 
-    questions = {
-        1:"क्या बारिश हो रही है? / Is it raining?",
-        2:"पौधा हरा दिख रहा है? / Plant green?",
-        3:"कीड़े दिख रहे हैं? / Pests visible?",
-        4:"खेत सूखा है? / Field dry?",
-        5:"दाने सख्त हो गए? / Grains hard?",
-        6:"बहुत गर्मी है? / Too hot?",
-        7:"आसमान बादल है? / Cloudy sky?",
-        8:"खाद डाली है? / Added fertilizer?",
-        9:"पत्ते पीले हैं? / Leaves yellow?",
-        10:"फसल सूखी है? / Crop dry?"
+    data = {
+
+        1:{
+            "question":"क्या खेत में बारिश हो रही है? / Is it raining?",
+            "yes":{
+                "theory":"बारिश से मिट्टी की नमी बढ़ती है। / Rain increases soil moisture.",
+                "practical":"आज सिंचाई न करें। पानी बचाएं। / Do not irrigate today. Save water."
+            },
+            "no":{
+                "theory":"मिट्टी सूख सकती है। / Soil may dry.",
+                "practical":"हल्की सिंचाई करें। / Do light irrigation."
+            }
+        },
+
+        2:{
+            "question":"पौधा हरा और मजबूत दिख रहा है? / Plant healthy green?",
+            "yes":{
+                "theory":"हरी पत्तियाँ अच्छे पोषण का संकेत हैं। / Green leaves show good nutrition.",
+                "practical":"अभी खाद न डालें। सामान्य देखभाल करें। / No fertilizer needed now."
+            },
+            "no":{
+                "theory":"पोषक तत्व की कमी हो सकती है। / Nutrient deficiency possible.",
+                "practical":"नाइट्रोजन वाली खाद दें। / Add nitrogen fertilizer."
+            }
+        },
+
+        3:{
+            "question":"कीड़े या रोग दिख रहे हैं? / Pests visible?",
+            "yes":{
+                "theory":"कीट फसल को नुकसान पहुंचाते हैं। / Pests damage crops.",
+                "practical":"कीटनाशक स्प्रे करें। / Spray pesticide."
+            },
+            "no":{
+                "theory":"फसल सुरक्षित है। / Crop is safe.",
+                "practical":"सप्ताह में एक बार निरीक्षण करें। / Inspect weekly."
+            }
+        },
+
+        4:{
+            "question":"मिट्टी बहुत सूखी है? / Is soil very dry?",
+            "yes":{
+                "theory":"सूखी मिट्टी से जड़ें कमजोर होती हैं। / Dry soil weakens roots.",
+                "practical":"तुरंत सिंचाई करें। / Irrigate immediately."
+            },
+            "no":{
+                "theory":"नमी पर्याप्त है। / Moisture sufficient.",
+                "practical":"अभी पानी की जरूरत नहीं। / No irrigation needed."
+            }
+        },
+
+        5:{
+            "question":"दाने सख्त हो गए हैं? / Grains hard?",
+            "yes":{
+                "theory":"सख्त दाने कटाई का संकेत हैं। / Hard grains mean harvest time.",
+                "practical":"कटाई शुरू करें। / Start harvesting."
+            },
+            "no":{
+                "theory":"फसल अभी कच्ची है। / Crop still immature.",
+                "practical":"1-2 सप्ताह प्रतीक्षा करें। / Wait 1-2 weeks."
+            }
+        },
+
+        6:{
+            "question":"बहुत अधिक गर्मी है? / Too much heat?",
+            "yes":{
+                "theory":"अधिक तापमान फसल को नुकसान दे सकता है। / High heat harms crops.",
+                "practical":"अतिरिक्त सिंचाई करें। / Increase watering."
+            },
+            "no":{
+                "theory":"तापमान सामान्य है। / Temperature normal.",
+                "practical":"सामान्य देखभाल जारी रखें। / Continue normal care."
+            }
+        },
+
+        7:{
+            "question":"आसमान में घने बादल हैं? / Heavy clouds?",
+            "yes":{
+                "theory":"बारिश की संभावना है। / Rain likely.",
+                "practical":"खाद या स्प्रे आज न करें। / Avoid fertilizer/spray today."
+            },
+            "no":{
+                "theory":"बारिश की संभावना कम है। / Low rain chance.",
+                "practical":"सिंचाई कर सकते हैं। / You may irrigate."
+            }
+        },
+
+        8:{
+            "question":"क्या आपने हाल में खाद डाली है? / Recently added fertilizer?",
+            "yes":{
+                "theory":"अधिक खाद नुकसान कर सकती है। / Excess fertilizer harmful.",
+                "practical":"अभी और खाद न डालें। / Do not add more."
+            },
+            "no":{
+                "theory":"पोषक तत्व की जरूरत हो सकती है। / Nutrients may be needed.",
+                "practical":"संतुलित खाद डालें। / Add balanced fertilizer."
+            }
+        },
+
+        9:{
+            "question":"पत्ते पीले हो रहे हैं? / Leaves turning yellow?",
+            "yes":{
+                "theory":"नाइट्रोजन की कमी हो सकती है। / Nitrogen deficiency possible.",
+                "practical":"यूरिया या नाइट्रोजन खाद दें। / Add urea."
+            },
+            "no":{
+                "theory":"पौधा स्वस्थ है। / Plant healthy.",
+                "practical":"सामान्य देखभाल रखें। / Maintain care."
+            }
+        },
+
+        10:{
+            "question":"फसल पूरी तरह सूख गई है? / Crop fully dry?",
+            "yes":{
+                "theory":"भंडारण के लिए सही समय है। / Good for storage.",
+                "practical":"सूखी जगह में स्टोर करें। / Store in dry place."
+            },
+            "no":{
+                "theory":"नमी बची है। / Moisture present.",
+                "practical":"कुछ दिन और सुखाएं। / Dry for few more days."
+            }
+        }
     }
 
-    yes_ans = {
-        1:"अच्छा है 🌾 / Good for crop",
-        2:"फसल स्वस्थ 👍 / Crop healthy",
-        3:"स्प्रे करें 🧴 / Spray medicine",
-        4:"पानी दें 💧 / Irrigate",
-        5:"कटाई करें ✂ / Harvest now",
-        6:"पानी बढ़ाएं 💧 / Increase irrigation",
-        7:"बारिश हो सकती है 🌧 / Rain possible",
-        8:"अच्छा 👍 / Good",
-        9:"खाद दें 🌱 / Add fertilizer",
-        10:"भंडारण करें 📦 / Store now"
-    }
-
-    no_ans = {
-        1:"सिंचाई करें 💧 / Irrigate",
-        2:"खाद दें 🌱 / Add fertilizer",
-        3:"फसल सुरक्षित 👍 / Crop safe",
-        4:"अभी जरूरत नहीं / Not needed",
-        5:"अभी इंतजार करें ⏳ / Wait",
-        6:"ठीक है 👍 / Normal",
-        7:"सिंचाई करें 💧 / Irrigate",
-        8:"खाद डालें 🌱 / Add fertilizer",
-        9:"ठीक है 👍 / Normal",
-        10:"अभी इंतजार करें ⏳ / Wait"
-    }
+    item = data.get(id)
 
     return f"""
     <html>
@@ -219,28 +305,53 @@ def tool(id):
         margin:0;
         font-family:Montserrat;
         background: linear-gradient(135deg,#0f2027,#2c5364);
-        text-align:center;
         color:white;
+        text-align:center;
     }}
-    h2{{padding-top:40px;}}
+    h2{{padding-top:30px;}}
     .btn{{
-        width:70%;
-        padding:18px;
+        width:80%;
+        padding:15px;
         margin:15px;
-        font-size:20px;
+        font-size:18px;
         border:none;
-        border-radius:15px;
-        background:#00ffcc;
+        border-radius:12px;
+        background:#fdd835;
         cursor:pointer;
     }}
+    .result{{
+        margin:20px;
+        padding:15px;
+        background:rgba(255,255,255,0.2);
+        border-radius:12px;
+    }}
     </style>
+
+    <script>
+    function showAnswer(type){{
+        let theory = "{item['yes']['theory']}";
+        let practical = "{item['yes']['practical']}";
+
+        if(type == 'no'){{
+            theory = "{item['no']['theory']}";
+            practical = "{item['no']['practical']}";
+        }}
+
+        document.getElementById("result").innerHTML =
+        "<div class='result'><b>Theory / सिद्धांत:</b><br>"+theory+
+        "<br><br><b>Practical / व्यवहारिक उपाय:</b><br>"+practical+"</div>";
+    }}
+    </script>
+
     </head>
     <body>
 
-    <h2>{questions.get(id,"Question")}</h2>
+    <h2>{item['question']}</h2>
 
-    <button class="btn" onclick="alert('{yes_ans.get(id,"")}')">हाँ / Yes</button>
-    <button class="btn" onclick="alert('{no_ans.get(id,"")}')">नहीं / No</button>
+    <button class="btn" onclick="showAnswer('yes')">हाँ / Yes</button>
+    <button class="btn" onclick="showAnswer('no')">नहीं / No</button>
+
+    <div id="result"></div>
 
     <br><br>
     <a href="/crop" style="color:white;">⬅ Back</a>
