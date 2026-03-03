@@ -63,158 +63,185 @@ h2 {
 </body>
 </html> 
 """
-# ==========================
-# Dashboard
-# ==========================
-@app.route("/dashboard")
-def dashboard():
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html>
 <head>
-<title>Kisan Saathi Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PARTH'S KISAN SAATHI</title>
 
 <style>
 body{
-    margin:0;
-    font-family:sans-serif;
-    background: linear-gradient(135deg,#11998e,#38ef7d);
-    color:white;
-    text-align:center;
+margin:0;
+font-family:Arial, sans-serif;
+background:linear-gradient(135deg,#134e5e,#71b280);
+color:white;
+text-align:center;
 }
 
-h1{
-    padding:20px;
+.section{display:none;padding:20px;}
+.active{display:block;}
+
+h1{font-size:26px;margin-top:20px;}
+
+.main-btn{
+width:90%;
+padding:15px;
+margin:10px;
+font-size:18px;
+border:none;
+border-radius:15px;
+background:#fdd835;
+color:#2f6f2f;
+font-weight:bold;
+cursor:pointer;
 }
 
 .tool-btn{
-    width:85%;
-    padding:15px;
-    margin:10px;
-    font-size:18px;
-    border:none;
-    border-radius:12px;
-    background:#fdd835;
-    cursor:pointer;
+width:90%;
+padding:14px;
+margin:6px;
+font-size:17px;
+border:none;
+border-radius:12px;
+background:white;
+cursor:pointer;
+}
+
+.answer-btn{
+width:70%;
+padding:12px;
+margin:10px;
+font-size:16px;
+border:none;
+border-radius:10px;
+background:#fdd835;
+cursor:pointer;
 }
 
 .result{
-    margin:20px;
-    padding:15px;
-    background:rgba(0,0,0,0.2);
-    border-radius:12px;
+margin:20px;
+padding:15px;
+background:rgba(0,0,0,0.3);
+border-radius:12px;
 }
 </style>
 
 <script>
-function showTool(tool){
 
-let data = {
-1:["बारिश हो रही है?",
-   "Rain increases soil moisture.","आज सिंचाई न करें।",
-   "Soil may dry.","हल्की सिंचाई करें।"],
+function showSection(id){
+document.querySelectorAll(".section").forEach(sec=>sec.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+}
 
-2:["पौधा हरा है?",
-   "Green leaves mean good nutrition.","खाद की जरूरत नहीं।",
-   "Nutrient deficiency possible.","नाइट्रोजन खाद दें।"],
+let tools = {
+1:{q:"क्या खेत में बारिश हो रही है? / Is it raining?",
+yes:["बारिश से नमी बढ़ती है।","आज सिंचाई न करें।"],
+no:["मिट्टी सूख सकती है।","हल्की सिंचाई करें।"]},
 
-3:["कीड़े दिख रहे हैं?",
-   "Pests damage crops.","कीटनाशक स्प्रे करें।",
-   "Crop safe.","सप्ताह में जांच करें।"],
+2:{q:"पत्ते हरे हैं? / Leaves green?",
+yes:["फसल स्वस्थ है।","अभी खाद न डालें।"],
+no:["पोषक तत्व कमी।","नाइट्रोजन खाद डालें।"]},
 
-4:["मिट्टी सूखी है?",
-   "Dry soil weakens roots.","तुरंत पानी दें।",
-   "Moisture enough.","अभी पानी की जरूरत नहीं।"],
+3:{q:"कीड़े दिख रहे हैं? / Pests visible?",
+yes:["कीट नुकसान करते हैं।","कीटनाशक स्प्रे करें।"],
+no:["फसल सुरक्षित।","सप्ताह में जांच करें।"]},
 
-5:["दाने सख्त हैं?",
-   "Hard grains mean harvest time.","कटाई शुरू करें।",
-   "Crop immature.","1-2 सप्ताह प्रतीक्षा करें।"],
+4:{q:"मिट्टी सूखी है? / Soil dry?",
+yes:["जड़ कमजोर हो सकती है।","तुरंत पानी दें।"],
+no:["नमी पर्याप्त है।","पानी की जरूरत नहीं।"]},
 
-6:["बहुत गर्मी है?",
-   "High heat harms crops.","पानी बढ़ाएं।",
-   "Temperature normal.","सामान्य देखभाल करें।"],
+5:{q:"दाने सख्त हैं? / Grains hard?",
+yes:["कटाई का समय है।","कटाई शुरू करें।"],
+no:["फसल कच्ची है।","कुछ दिन प्रतीक्षा करें।"]},
 
-7:["घने बादल हैं?",
-   "Rain possible.","आज स्प्रे न करें।",
-   "Low rain chance.","सिंचाई कर सकते हैं।"],
+6:{q:"बहुत गर्मी है? / Too much heat?",
+yes:["अधिक गर्मी नुकसानदेह।","पानी बढ़ाएं।"],
+no:["तापमान सामान्य।","सामान्य देखभाल करें।"]},
 
-8:["खाद हाल में डाली?",
-   "Excess fertilizer harmful.","और खाद न डालें।",
-   "Nutrients may be low.","संतुलित खाद डालें।"],
+7:{q:"आसमान बादल है? / Cloudy sky?",
+yes:["बारिश संभव।","आज स्प्रे न करें।"],
+no:["बारिश कम संभावना।","सिंचाई कर सकते हैं।"]},
 
-9:["पत्ते पीले हैं?",
-   "Nitrogen deficiency.","यूरिया डालें।",
-   "Plant healthy.","सामान्य देखभाल करें।"],
+8:{q:"हाल में खाद डाली? / Added fertilizer recently?",
+yes:["अधिक खाद नुकसान।","और खाद न डालें।"],
+no:["पोषक तत्व कम।","संतुलित खाद डालें।"]},
 
-10:["फसल सूखी है?",
-    "Good for storage.","सूखी जगह स्टोर करें।",
-    "Moisture present.","कुछ दिन और सुखाएं।"]
+9:{q:"पत्ते पीले हैं? / Yellow leaves?",
+yes:["नाइट्रोजन कमी।","यूरिया डालें।"],
+no:["पौधा स्वस्थ।","सामान्य देखभाल रखें।"]},
+
+10:{q:"फसल पूरी सूखी है? / Crop fully dry?",
+yes:["भंडारण योग्य।","सूखी जगह रखें।"],
+no:["नमी है।","और सुखाएं।"]}
 };
 
-let item = data[tool];
+function openTool(id){
+document.getElementById("question").innerHTML = tools[id].q;
 
-document.getElementById("question").innerHTML = item[0];
-document.getElementById("result").innerHTML = `
-<button class="tool-btn" onclick="showAnswer(${tool},'yes')">हाँ / Yes</button>
-<button class="tool-btn" onclick="showAnswer(${tool},'no')">नहीं / No</button>
-`;
+document.getElementById("answers").innerHTML =
+"<button class='answer-btn' onclick='showResult("+id+",\"yes\")'>हाँ / Yes</button>"+
+"<button class='answer-btn' onclick='showResult("+id+",\"no\")'>नहीं / No</button>";
+
+document.getElementById("result").innerHTML="";
 }
 
-function showAnswer(tool,ans){
+function showResult(id,type){
+let theory = tools[id][type][0];
+let practical = tools[id][type][1];
 
-let data = {
-1:["Rain increases soil moisture.","आज सिंचाई न करें.",
-   "Soil may dry.","हल्की सिंचाई करें."],
-2:["Green leaves good.","खाद जरूरत नहीं.",
-   "Nutrient deficiency.","नाइट्रोजन खाद दें."],
-3:["Pests harmful.","स्प्रे करें.",
-   "Safe crop.","जांच करते रहें."],
-4:["Dry soil bad.","पानी दें.",
-   "Moisture ok.","जरूरत नहीं."],
-5:["Harvest time.","कटाई करें.",
-   "Not ready.","प्रतीक्षा करें."],
-6:["Heat harmful.","पानी बढ़ाएं.",
-   "Normal temp.","देखभाल करें."],
-7:["Rain possible.","स्प्रे न करें.",
-   "No rain.","सिंचाई करें."],
-8:["Too much fertilizer bad.","और खाद न डालें.",
-   "Nutrient low.","संतुलित खाद डालें."],
-9:["Nitrogen low.","यूरिया डालें.",
-   "Healthy plant.","देखभाल रखें."],
-10:["Ready to store.","सूखी जगह रखें.",
-    "Still wet.","और सुखाएं."]
-};
-
-let item = data[tool];
-
-if(ans=="yes"){
 document.getElementById("result").innerHTML =
-"<div class='result'><b>Theory:</b><br>"+item[0]+"<br><br><b>Practical:</b><br>"+item[1]+"</div>";
-}else{
-document.getElementById("result").innerHTML =
-"<div class='result'><b>Theory:</b><br>"+item[2]+"<br><br><b>Practical:</b><br>"+item[3]+"</div>";
+"<div class='result'><b>Theory:</b><br>"+theory+
+"<br><br><b>Practical:</b><br>"+practical+"</div>";
 }
-}
+
 </script>
 </head>
 
 <body>
 
-<h1>🌾 Crop Management Dashboard<br>फसल प्रबंधन</h1>
+<!-- START SCREEN -->
+<div id="start" class="section active">
+<h1>🌾 PARTH'S KISAN SAATHI</h1>
+<h3>Har Kisan Ka Digital Saathi</h3>
+<button class="main-btn" onclick="showSection('dashboard')">
+Enter App / ऐप में प्रवेश करें
+</button>
+</div>
 
-<button class="tool-btn" onclick="showTool(1)">🌧 Rain</button>
-<button class="tool-btn" onclick="showTool(2)">🌿 Plant Health</button>
-<button class="tool-btn" onclick="showTool(3)">🐛 Pest</button>
-<button class="tool-btn" onclick="showTool(4)">💧 Soil Dry</button>
-<button class="tool-btn" onclick="showTool(5)">🌾 Harvest</button>
-<button class="tool-btn" onclick="showTool(6)">🌡 Heat</button>
-<button class="tool-btn" onclick="showTool(7)">☁ Cloud</button>
-<button class="tool-btn" onclick="showTool(8)">🧪 Fertilizer</button>
-<button class="tool-btn" onclick="showTool(9)">🍂 Yellow Leaves</button>
-<button class="tool-btn" onclick="showTool(10)">🏪 Storage</button>
+<!-- DASHBOARD -->
+<div id="dashboard" class="section">
+<h1>📊 Dashboard / डैशबोर्ड</h1>
+<button class="main-btn" onclick="showSection('crop')">
+🌱 Crop Management / फसल प्रबंधन
+</button>
+<button class="main-btn" onclick="showSection('start')">
+⬅ Back to Start
+</button>
+</div>
+
+<!-- CROP SECTION -->
+<div id="crop" class="section">
+<h1>🌱 Crop Tools</h1>
+
+<button class="tool-btn" onclick="openTool(1)">🌧 Rain</button>
+<button class="tool-btn" onclick="openTool(2)">🌿 Plant Health</button>
+<button class="tool-btn" onclick="openTool(3)">🐛 Pest</button>
+<button class="tool-btn" onclick="openTool(4)">💧 Soil</button>
+<button class="tool-btn" onclick="openTool(5)">🌾 Harvest</button>
+<button class="tool-btn" onclick="openTool(6)">🌡 Heat</button>
+<button class="tool-btn" onclick="openTool(7)">☁ Cloud</button>
+<button class="tool-btn" onclick="openTool(8)">🧪 Fertilizer</button>
+<button class="tool-btn" onclick="openTool(9)">🍂 Yellow Leaves</button>
+<button class="tool-btn" onclick="openTool(10)">🏪 Storage</button>
 
 <h2 id="question"></h2>
+<div id="answers"></div>
 <div id="result"></div>
+
+<button class="main-btn" onclick="showSection('dashboard')">
+⬅ Back to Dashboard
+</button>
+</div>
 
 </body>
 </html>
