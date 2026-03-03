@@ -157,113 +157,83 @@ h2{ font-size:24px; margin:0; padding:5px; text-shadow:1px 1px 6px rgba(0,0,0,0.
 </body>
 </html>
 """
-    @app.route("/category1")
+from flask import Flask, request
+
+app = Flask(__name__)
+
+# ---------------- HOME ----------------
+@app.route("/")
+def home():
+    return """
+    <h1>🌾 PARTH'S KISAN SAATHI</h1>
+    <a href='/dashboard'><button>Enter App</button></a>
+    """
+
+# ---------------- DASHBOARD ----------------
+@app.route("/dashboard")
+def dashboard():
+    return """
+    <h2>Dashboard / डैशबोर्ड</h2>
+    <a href='/category1'><button>🌾 Crop Management</button></a>
+    """
+
+# ---------------- CATEGORY 1 ----------------
+@app.route("/category1")
 def category1():
     return """
-<!DOCTYPE html>
-<html>
-<head>
-<title>Crop Management / फ़सल प्रबंधन</title>
-<style>
-body{
-margin:0;
-font-family:Arial;
-background: linear-gradient(135deg, #87ceeb, #a8e063, #fff176);
-color:white;
-text-align:center;
-min-height:100vh;
-padding-bottom:50px;
-}
-h1{margin-top:30px;}
-.section{
-background:rgba(0,0,0,0.35);
-margin:20px auto;
-padding:20px;
-border-radius:20px;
-width:85%;
-}
-button{
-padding:12px 20px;
-margin:10px;
-border:none;
-border-radius:25px;
-cursor:pointer;
-font-weight:bold;
-background:white;
-color:black;
-}
-button:hover{
-background:#ddd;
-}
-.option-btn{
-display:block;
-width:80%;
-margin:10px auto;
-}
-</style>
+    <h2>Crop Management / फ़सल प्रबंधन</h2>
 
-<script>
-function showTheory(){
-document.getElementById("content").innerHTML = `
-<h3>Theory / सिद्धांत</h3>
-<p><b>Soil Types / मिट्टी के प्रकार:</b></p>
-<p>1. Sandy Soil – पानी जल्दी निकल जाता है / Water drains quickly</p>
-<p>2. Clay Soil – पानी रुकता है / Holds water</p>
-<p>3. Loamy Soil – खेती के लिए सबसे अच्छी / Best for farming</p>
-`;
-}
+    <h3>Tool 1: Soil Type Identification</h3>
 
-function showPractical(){
-document.getElementById("content").innerHTML = `
-<h3>Practical / प्रयोग</h3>
-<p><b>Q1: आपकी मिट्टी कैसी लगती है?</b></p>
-<p><b>How does your soil feel?</b></p>
+    <a href='/theory1'><button>Theory / सिद्धांत</button></a>
+    <a href='/practical1'><button>Practical / प्रयोग</button></a>
+    """
 
-<button class="option-btn" onclick="answer1('sandy')">
-रेतीली (Sandy)
-</button>
+# ---------------- THEORY ----------------
+@app.route("/theory1")
+def theory1():
+    return """
+    <h3>Theory / सिद्धांत</h3>
 
-<button class="option-btn" onclick="answer1('clay')">
-चिकनी (Clay)
-</button>
+    <p>Sandy Soil – पानी जल्दी निकलता है</p>
+    <p>Clay Soil – पानी रुकता है</p>
+    <p>Loamy Soil – खेती के लिए सर्वोत्तम</p>
 
-<button class="option-btn" onclick="answer1('loamy')">
-मिश्रित (Loamy)
-</button>
-`;
-}
+    <a href='/category1'><button>Back</button></a>
+    """
 
-function answer1(type){
-if(type=="sandy"){
-document.getElementById("content").innerHTML =
-"<h3>Result</h3><p>आपकी मिट्टी रेतीली है। मूंगफली, तरबूज उगा सकते हैं।</p><p>Your soil is Sandy. Groundnut, Watermelon are suitable.</p>";
-}
-if(type=="clay"){
-document.getElementById("content").innerHTML =
-"<h3>Result</h3><p>आपकी मिट्टी चिकनी है। धान, गेहूं उगा सकते हैं।</p><p>Your soil is Clay. Rice, Wheat are suitable.</p>";
-}
-if(type=="loamy"){
-document.getElementById("content").innerHTML =
-"<h3>Result</h3><p>आपकी मिट्टी दोमट है। अधिकतर फसलें उग सकती हैं।</p><p>Your soil is Loamy. Most crops grow well.</p>";
-}
-}
-</script>
+# ---------------- PRACTICAL ----------------
+@app.route("/practical1")
+def practical1():
+    return """
+    <h3>Practical Question</h3>
+    <p>How does your soil feel?</p>
 
-</head>
-<body>
+    <a href='/result1?type=sandy'><button>रेतीली / Sandy</button></a>
+    <a href='/result1?type=clay'><button>चिकनी / Clay</button></a>
+    <a href='/result1?type=loamy'><button>दोमट / Loamy</button></a>
+    """
 
-<h1>🌾 Crop Management / फ़सल प्रबंधन</h1>
+# ---------------- RESULT ----------------
+@app.route("/result1")
+def result1():
+    soil = request.args.get("type")
 
-<div class="section">
-<h2>Tool 1: Soil Type Identification / मिट्टी पहचान</h2>
+    if soil == "sandy":
+        msg = "Sandy Soil: Groundnut, Watermelon suitable."
+    elif soil == "clay":
+        msg = "Clay Soil: Rice, Wheat suitable."
+    elif soil == "loamy":
+        msg = "Loamy Soil: Most crops suitable."
+    else:
+        msg = "Invalid selection."
 
-<button onclick="showTheory()">Theory / सिद्धांत</button>
-<button onclick="showPractical()">Practical / प्रयोग</button>
+    return f"""
+    <h3>Result</h3>
+    <p>{msg}</p>
+    <a href='/category1'><button>Back</button></a>
+    """
 
-<div id="content"></div>
-
-</div>
-
-</body>
-</html>
-"""
+# ---------------- RUN ----------------
+if __name__ == "__main__":
+    app.run()
