@@ -157,197 +157,125 @@ h2{ font-size:24px; margin:0; padding:5px; text-shadow:1px 1px 6px rgba(0,0,0,0.
 </body>
 </html>
 """
-from flask import Flask, request
+# ================= CROP MANAGEMENT (FINAL) =================
 
-app = Flask(__name__)
-
-# ================= DASHBOARD =================
-@app.route("/")
-@app.route("/dashboard")
-def dashboard():
-    return """
-    <h1>🌾 SAATHI Dashboard / डैशबोर्ड</h1>
-
-    <a href="/category1">
-        <button style="padding:10px;margin:10px;">
-        🌾 Crop Management / फ़सल प्रबंधन
-        </button>
-    </a>
-
-    <br><br>
-    """
-
-# ================= CATEGORY 1 =================
 @app.route("/category1")
 def category1():
     return """
-    <h2>🌾 Crop Management Tools</h2>
+    <style>
+    body{
+        background: linear-gradient(135deg,#1d976c,#93f9b9);
+        font-family: Arial;
+        text-align:center;
+        color:white;
+    }
+    h2{margin-top:20px;}
+    .card{
+        background: rgba(255,255,255,0.15);
+        margin:12px;
+        padding:18px;
+        border-radius:15px;
+    }
+    button{
+        padding:14px 20px;
+        margin:6px;
+        border:none;
+        border-radius:10px;
+        font-size:15px;
+        cursor:pointer;
+        background:#ffeb3b;
+    }
+    a{color:white;text-decoration:none;}
+    </style>
 
-    <a href='/tool/1'>1️⃣ Crop Yield Estimator</a><br><br>
-    <a href='/tool/2'>2️⃣ Soil Nutrient Balancer</a><br><br>
-    <a href='/tool/3'>3️⃣ Water Demand Calculator</a><br><br>
-    <a href='/tool/4'>4️⃣ Irrigation Interval Predictor</a><br><br>
-    <a href='/tool/5'>5️⃣ Crop Rotation Planner</a><br><br>
-    <a href='/tool/6'>6️⃣ Pest Risk Score</a><br><br>
-    <a href='/tool/7'>7️⃣ Growth Stage Advisor</a><br><br>
-    <a href='/tool/8'>8️⃣ Harvest Time Predictor</a><br><br>
-    <a href='/tool/9'>9️⃣ Fertilizer Efficiency Checker</a><br><br>
-    <a href='/tool/10'>🔟 Profit Forecast Tool</a><br><br>
+    <h2>🌾 Crop Management / फसल प्रबंधन</h2>
 
-    <a href='/dashboard'>⬅ Back</a>
+    <div class='card'>
+        <a href='/tool/1'><button>🌧 Rain Help / बारिश सलाह</button></a>
+        <a href='/tool/2'><button>🌡 Weather Help / मौसम सलाह</button></a>
+        <a href='/tool/3'><button>🌱 Soil Check / मिट्टी जांच</button></a>
+        <a href='/tool/4'><button>🐛 Pest Help / कीट सलाह</button></a>
+        <a href='/tool/5'><button>🌾 Harvest Time / कटाई समय</button></a>
+        <a href='/tool/6'><button>💧 Water Advice / पानी सलाह</button></a>
+        <a href='/tool/7'><button>🌿 Next Crop / अगली फसल</button></a>
+        <a href='/tool/8'><button>🧴 Fertilizer Help / खाद सलाह</button></a>
+        <a href='/tool/9'><button>💰 Sell or Wait / बेचें या रोकें</button></a>
+        <a href='/tool/10'><button>🌱 Plant Health / पौधा स्थिति</button></a>
+    </div>
     """
 
-# ================= TOOL ENGINE =================
-@app.route("/tool/<tool_id>", methods=["GET","POST"])
-def tools(tool_id):
 
-    result = ""
+@app.route("/tool/<tool_id>")
+def tool(tool_id):
 
-    try:
-        if request.method == "POST":
+    theme = """
+    <style>
+    body{
+        background: linear-gradient(135deg,#0f2027,#2c5364);
+        font-family: Arial;
+        text-align:center;
+        color:white;
+    }
+    button{
+        padding:15px 25px;
+        margin:10px;
+        border:none;
+        border-radius:12px;
+        font-size:16px;
+        cursor:pointer;
+        background:#00ffcc;
+    }
+    a{color:white;text-decoration:none;}
+    </style>
+    """
 
-            if tool_id == "1":
-                area = float(request.form.get("area",0))
-                seed = float(request.form.get("seed",0))
-                rain = float(request.form.get("rain",0))
-                result = f"🌾 Estimated Yield: {round(area*seed*(rain/500),2)} quintals"
-
-            elif tool_id == "2":
-                ph = float(request.form.get("ph",0))
-                if ph < 6:
-                    result = "Soil acidic → Add Lime"
-                elif ph > 7.5:
-                    result = "Soil alkaline → Add Organic manure"
-                else:
-                    result = "Soil balanced"
-
-            elif tool_id == "3":
-                temp = float(request.form.get("temp",0))
-                water = 6000
-                if temp > 35: water *= 1.2
-                if temp < 20: water *= 0.9
-                result = f"Water Need: {round(water)} L/acre/day"
-
-            elif tool_id == "4":
-                soil = request.form.get("soil","").lower()
-                if soil == "sandy":
-                    result = "Irrigate every 4 days"
-                elif soil == "clay":
-                    result = "Irrigate every 8 days"
-                else:
-                    result = "Irrigate every 6 days"
-
-            elif tool_id == "5":
-                crop = request.form.get("crop","").lower()
-                rotation = {
-                    "wheat":"Plant legumes next",
-                    "rice":"Plant maize next",
-                    "maize":"Plant wheat next"
-                }
-                result = rotation.get(crop,"Plant legumes")
-
-            elif tool_id == "6":
-                hum = float(request.form.get("humidity",0))
-                temp = float(request.form.get("temp",0))
-                result = f"Pest Risk Score: {round((hum/100)*temp,2)}"
-
-            elif tool_id == "7":
-                age = int(request.form.get("age",0))
-                if age < 30:
-                    result = "Vegetative Stage"
-                elif age < 60:
-                    result = "Flowering Stage"
-                else:
-                    result = "Maturity Stage"
-
-            elif tool_id == "8":
-                crop = request.form.get("crop","").lower()
-                age = int(request.form.get("age",0))
-                if crop=="wheat" and age>=120:
-                    result="Ready for harvest"
-                elif crop=="rice" and age>=150:
-                    result="Ready for harvest"
-                else:
-                    result="Not ready yet"
-
-            elif tool_id == "9":
-                fert = float(request.form.get("fert",0))
-                yield_amt = float(request.form.get("yield",0))
-                if fert>0:
-                    result = f"Efficiency: {round((yield_amt/fert)*100,2)}%"
-                else:
-                    result = "Invalid fertilizer value"
-
-            elif tool_id == "10":
-                y = float(request.form.get("yield",0))
-                price = float(request.form.get("price",0))
-                cost = float(request.form.get("cost",0))
-                result = f"Estimated Profit: ₹{round((y*price)-cost,2)}"
-
-    except:
-        result = "Invalid Input"
-
-    forms = {
-        "1": """<h3>Crop Yield Estimator</h3>
-                <form method='post'>
-                Area:<input name='area'><br>
-                Seed:<input name='seed'><br>
-                Rain:<input name='rain'><br>
-                <button>Calculate</button></form>""",
-
-        "2": """<h3>Soil Nutrient Balancer</h3>
-                <form method='post'>
-                Soil pH:<input name='ph'><br>
-                <button>Check</button></form>""",
-
-        "3": """<h3>Water Demand Calculator</h3>
-                <form method='post'>
-                Temp:<input name='temp'><br>
-                <button>Calculate</button></form>""",
-
-        "4": """<h3>Irrigation Interval</h3>
-                <form method='post'>
-                Soil:<input name='soil'><br>
-                <button>Predict</button></form>""",
-
-        "5": """<h3>Crop Rotation</h3>
-                <form method='post'>
-                Last Crop:<input name='crop'><br>
-                <button>Suggest</button></form>""",
-
-        "6": """<h3>Pest Risk</h3>
-                <form method='post'>
-                Humidity:<input name='humidity'><br>
-                Temp:<input name='temp'><br>
-                <button>Check</button></form>""",
-
-        "7": """<h3>Growth Stage</h3>
-                <form method='post'>
-                Age:<input name='age'><br>
-                <button>Check</button></form>""",
-
-        "8": """<h3>Harvest Predictor</h3>
-                <form method='post'>
-                Crop:<input name='crop'><br>
-                Age:<input name='age'><br>
-                <button>Check</button></form>""",
-
-        "9": """<h3>Fertilizer Efficiency</h3>
-                <form method='post'>
-                Fertilizer:<input name='fert'><br>
-                Yield:<input name='yield'><br>
-                <button>Check</button></form>""",
-
-        "10": """<h3>Profit Forecast</h3>
-                 <form method='post'>
-                 Yield:<input name='yield'><br>
-                 Price:<input name='price'><br>
-                 Cost:<input name='cost'><br>
-                 <button>Calculate</button></form>"""
+    tools = {
+        "1": "🌧 क्या बारिश हो रही है? / Is it raining?",
+        "2": "🌡 क्या बहुत गर्मी है? / Is it very hot?",
+        "3": "🌱 मिट्टी सूखी लग रही है? / Soil looks dry?",
+        "4": "🐛 क्या कीड़े दिख रहे हैं? / Seeing pests?",
+        "5": "🌾 दाने सख्त हो गए? / Grains hard?",
+        "6": "💧 खेत सूखा है? / Field dry?",
+        "7": "🌿 पिछली फसल गेहूं थी? / Last crop wheat?",
+        "8": "🧴 पत्ते पीले हैं? / Leaves yellow?",
+        "9": "💰 बाजार भाव अच्छा है? / Market price good?",
+        "10": "🌱 पौधा हरा दिख रहा है? / Plant looks green?"
     }
 
-    return forms.get(tool_id,"Invalid Tool") + f"<br><h3 style='color:green'>{result}</h3><br><a href='/category1'>⬅ Back</a>"
+    yes_answer = {
+        "1": "अच्छी पैदावार होगी 🌾 / Good yield",
+        "2": "ज्यादा पानी दें 💦 / Give more water",
+        "3": "आज पानी दें 💧 / Irrigate today",
+        "4": "जैविक स्प्रे करें 🌿 / Spray organic",
+        "5": "कटाई करें ✂ / Harvest now",
+        "6": "पानी दें 💦 / Irrigate",
+        "7": "अब दाल बोएं 🌱 / Grow pulses",
+        "8": "नाइट्रोजन खाद दें / Add nitrogen",
+        "9": "अभी बेचें 💵 / Sell now",
+        "10": "फसल स्वस्थ 👍 / Crop healthy"
+    }
 
+    no_answer = {
+        "1": "सिंचाई करें 💧 / Irrigate",
+        "2": "सामान्य देखभाल करें 👍 / Normal care",
+        "3": "अभी जरूरत नहीं / No need now",
+        "4": "फसल सुरक्षित 👍 / Crop safe",
+        "5": "अभी इंतजार करें ⏳ / Wait",
+        "6": "अभी जरूरत नहीं / Not needed",
+        "7": "मक्का बोएं 🌽 / Grow maize",
+        "8": "सब ठीक 👍 / All good",
+        "9": "रोक कर रखें ⏳ / Wait to sell",
+        "10": "खाद/पानी जांचें 💧 / Check fertilizer"
+    }
 
-if __name__ == "__main__":
-    app.run(debug=True)
+    if tool_id in tools:
+        return theme + f"""
+        <h2>{tools[tool_id]}</h2>
+        <button onclick="alert('{yes_answer[tool_id]}')">हाँ / Yes</button>
+        <button onclick="alert('{no_answer[tool_id]}')">नहीं / No</button>
+        <br><br>
+        <a href='/category1'>⬅ Back</a>
+        """
+
+    return "Invalid Tool"
+    
