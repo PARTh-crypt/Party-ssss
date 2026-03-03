@@ -63,27 +63,33 @@ h2 {
 </body>
 </html> 
 """
-from flask import Flask, render_template_string, request
-
-app = Flask(name)
-
-==========================
-
-DASHBOARD
-
-==========================
-
-@app.route('/dashboard') def dashboard(): return render_template_string(""" <!DOCTYPE html> <html> <head> <title>PARTH'S KISAN SAATHI - Dashboard</title> <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet"> <style> body{ margin:0; font-family:'Montserrat',sans-serif; background: linear-gradient(135deg,#1e3c72,#2a5298,#6dd5ed,#2193b0); background-size: 400% 400%; animation: gradientBG 15s ease infinite; color:white; text-align:center; min-height:100vh; }
-
-@keyframes gradientBG {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
+# ==========================
+# Dashboard + Category 1 Tools
+# ==========================
+@app.route("/dashboard")
+def dashboard():
+    return """
+<!DOCTYPE html>
+<html>
+<head>
+<title>PARTH'S KISAN SAATHI - Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<style>
+body{
+    margin:0;
+    font-family:'Montserrat',sans-serif;
+    background: linear-gradient(135deg,#1e3c72,#2a5298,#6dd5ed,#2193b0);
+    background-size: 400% 400%;
+    animation: bgMove 20s ease infinite;
+    color:white;
+    text-align:center;
 }
-
-h1{margin-top:40px;font-family:'Playfair Display', serif;font-size:48px;}
-h2{font-size:24px;margin:10px;}
-
+@keyframes bgMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+h1{margin-top:30px; font-family:'Playfair Display', serif;}
 .card{
     width:80%;
     margin:20px auto;
@@ -94,201 +100,244 @@ h2{font-size:24px;margin:10px;}
     cursor:pointer;
     transition:0.3s;
 }
-.card:hover{background:rgba(255,255,255,0.35); transform:scale(1.05);}
-a{text-decoration:none;color:white;}
+.card:hover{background:rgba(255,255,255,0.35); transform:scale(1.03);}
 </style>
 </head>
 <body>
-<h1>PARTH'S KISAN SAATHI</h1>
-<h2>Farmer Dashboard / किसान डैशबोर्ड</h2>
+<h1>Dashboard / डैशबोर्ड</h1>
 
-<a href="/crop"><div class="card">🌾 Crop Management / फ़सल प्रबंधन</div></a>
+<a href="/crop">
+    <div class="card">🌾 Crop Management / फ़सल प्रबंधन</div>
+</a>
+
 </body>
 </html>
-""")
-
-==========================
-
-CATEGORY 1 – CROP MANAGEMENT TOOLS
-
-==========================
-
-@app.route('/crop', methods=['GET','POST']) def crop_tools(): result = ""
-
-tool_id = request.args.get('tool')
-
-# Tool logic
-if request.method=='POST':
-    if tool_id=='1':  # Crop Yield Estimator
-        area = float(request.form['area'])
-        seed = float(request.form['seed'])
-        rain = float(request.form['rain'])
-        yield_est = area * seed * (rain/500)
-        result = f"Estimated Yield / अनुमानित उत्पादन: {round(yield_est,2)} quintals"
-    elif tool_id=='2':  # Soil Nutrient Balancer
-        ph = float(request.form['ph'])
-        if ph<6:
-            result="Soil acidic → Add Lime + Compost / मिट्टी अम्लीय → चूना + कम्पोस्ट डालें"
-        elif ph>7.5:
-            result="Soil alkaline → Add Organic manure / मिट्टी क्षारीय → जैविक खाद डालें"
-        else:
-            result="Soil balanced → Standard fertilizer dose / मिट्टी संतुलित → सामान्य उर्वरक"
-    elif tool_id=='3':  # Water Demand Calculator
-        temp = float(request.form['temp'])
-        base = 6000
-        if temp>35: base*=1.2
-        elif temp<20: base*=0.9
-        result=f"Water Requirement / जल आवश्यकता: {round(base)} liters/acre/day"
-    elif tool_id=='4':  # Irrigation Interval Predictor
-        soil = request.form['soil'].lower()
-        if soil=='sandy': result="Irrigate every 4 days / हर 4 दिन सिंचाई करें"
-        elif soil=='clay': result="Irrigate every 8 days / हर 8 दिन सिंचाई करें"
-        else: result="Irrigate every 6 days / हर 6 दिन सिंचाई करें"
-    elif tool_id=='5':  # Crop Rotation Planner
-        last_crop = request.form['crop'].lower()
-        rotation = {'wheat':'Plant legumes next / अगली फसल: दलहन','rice':'Plant maize next / अगली फसल: मक्का','maize':'Plant wheat next / अगली फसल: गेहूं'}
-        result = rotation.get(last_crop,'Plant legumes for soil recovery / मिट्टी सुधार के लिए दलहन लगाएं')
-    elif tool_id=='6':  # Pest Risk Score
-        hum = float(request.form['humidity'])
-        temp = float(request.form['temp'])
-        risk=(hum/100)*temp
-        result=f"Pest Risk Score / कीट जोखिम: {round(risk,2)} (Low/Medium/High)"
-    elif tool_id=='7':  # Growth Stage Advisor
-        age=int(request.form['age'])
-        if age<30: result="Vegetative Stage → Focus on nitrogen / पत्तेदार अवस्था → नाइट्रोजन पर ध्यान दें"
-        elif age<60: result="Flowering Stage → Balanced nutrients / फूल आने की अवस्था → संतुलित पोषण"
-        else: result="Maturity Stage → Reduce irrigation / पकने की अवस्था → सिंचाई कम करें"
-    elif tool_id=='8':  # Harvest Time Predictor
-        crop=request.form['crop'].lower()
-        age=int(request.form['age'])
-        if crop=='wheat' and age>=120: result="Ready for harvest / कटाई के लिए तैयार"
-        elif crop=='rice' and age>=150: result="Ready for harvest / कटाई के लिए तैयार"
-        else: result="Not ready yet / अभी तैयार नहीं"
-    elif tool_id=='9':  # Fertilizer Efficiency Checker
-        fert=float(request.form['fert'])
-        yield_amt=float(request.form['yield'])
-        efficiency=(yield_amt/fert)*100
-        result=f"Efficiency / दक्षता: {round(efficiency,2)}%"
-    elif tool_id=='10':  # Profit Forecast Tool
-        yield_amt=float(request.form['yield'])
-        price=float(request.form['price'])
-        cost=float(request.form['cost'])
-        profit=(yield_amt*price)-cost
-        result=f"Estimated Profit / अनुमानित लाभ: ₹{round(profit,2)}"
-
-# HTML FORM
-forms = {
-    '1':"""
-    <h3>🌾 Crop Yield Estimator / अनुमानित उत्पादन</h3>
-    <p>Tap values / मान टैप करें</p>
-    <form method='post'>
-    Area (acres) / क्षेत्र (एकड़): <input name='area' type='number' step='0.1'><br><br>
-    Seed rate (kg/acre) / बीज दर (किग्रा/एकड़): <input name='seed' type='number' step='0.1'><br><br>
-    Rainfall (mm) / वर्षा (मिमी): <input name='rain' type='number' step='0.1'><br><br>
-    <button type='submit'>Calculate / गणना करें</button>
-    </form>
-    """,
-    '2':"""
-    <h3>🧪 Soil Nutrient Balancer / मिट्टी पोषण संतुलन</h3>
-    <form method='post'>
-    Soil pH / मिट्टी pH: <input name='ph' type='number' step='0.1'><br><br>
-    <button type='submit'>Check / जाँचें</button>
-    </form>
-    """,
-    '3':"""
-    <h3>💧 Water Demand Calculator / पानी की आवश्यकता</h3>
-    <form method='post'>
-    Temperature °C / तापमान °C: <input name='temp' type='number' step='0.1'><br><br>
-    <button type='submit'>Calculate / गणना करें</button>
-    </form>
-    """,
-    '4':"""
-    <h3>📅 Irrigation Interval Predictor / सिंचाई अंतराल</h3>
-    <form method='post'>
-    Soil type / मिट्टी प्रकार (sandy/loamy/clay): <input name='soil'><br><br>
-    <button type='submit'>Predict / भविष्यवाणी करें</button>
-    </form>
-    """,
-    '5':"""
-    <h3>🌿 Crop Rotation Planner / फसल चक्रीकरण</h3>
-    <form method='post'>
-    Last Crop / पिछली फसल: <input name='crop'><br><br>
-    <button type='submit'>Suggest / सुझाव दें</button>
-    </form>
-    """,
-    '6':"""
-    <h3>🦠 Pest Risk Score / कीट जोखिम</h3>
-    <form method='post'>
-    Humidity % / आर्द्रता %: <input name='humidity'><br>
-    Temperature °C / तापमान °C: <input name='temp'><br><br>
-    <button type='submit'>Check / जाँचें</button>
-    </form>
-    """,
-    '7':"""
-    <h3>🌾 Growth Stage Advisor / विकास अवस्था सलाहकार</h3>
-    <form method='post'>
-    Crop Age (days) / फसल उम्र (दिन): <input name='age' type='number'><br><br>
-    <button type='submit'>Check / जाँचें</button>
-    </form>
-    """,
-    '8':"""
-    <h3>🌾 Harvest Time Predictor / कटाई समय पूर्वानुमान</h3>
-    <form method='post'>
-    Crop type / फसल प्रकार: <input name='crop'><br>
-    Crop age / फसल उम्र (दिन): <input name='age' type='number'><br><br>
-    <button type='submit'>Check / जाँचें</button>
-    </form>
-    """,
-    '9':"""
-    <h3>🧪 Fertilizer Efficiency Checker / उर्वरक दक्षता जाँच</h3>
-    <form method='post'>
-    Fertilizer (kg) / उर्वरक (किग्रा): <input name='fert' type='number'><br>
-    Yield (quintal) / उत्पादन (क्विंटल): <input name='yield' type='number'><br><br>
-    <button type='submit'>Check / जाँचें</button>
-    </form>
-    """,
-    '10':"""
-    <h3>💰 Profit Forecast Tool / लाभ पूर्वानुमान</h3>
-    <form method='post'>
-    Yield (quintal) / उत्पादन (क्विंटल): <input name='yield' type='number'><br>
-    Price per quintal ₹ / कीमत प्रति क्विंटल ₹: <input name='price' type='number'><br>
-    Total cost ₹ / कुल लागत ₹: <input name='cost' type='number'><br><br>
-    <button type='submit'>Calculate / गणना करें</button>
-    </form>
-    """
-}
-
-tool_html = forms.get(tool_id,'')
-
-all_tools_html = """
-<h2>🌾 Crop Management Tools / फ़सल प्रबंधन टूल्स</h2>
-<p>Tap a tool below to open / नीचे टैप करें:</p>
-<div style='display:flex;flex-direction:column;align-items:center;'>
 """
-for i in range(1,11):
-    all_tools_html+=f"<a href='/crop?tool={i}'><div class='card'>{i}️⃣ Tool / टूल {i}</div></a>"
-all_tools_html+="</div>"
 
-return render_template_string(f"""
+# ==========================
+# Category 1 – Crop Management
+# ==========================
+@app.route("/crop")
+def crop():
+    return """
 <!DOCTYPE html>
 <html>
 <head>
 <title>Crop Management Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 <style>
-body{{margin:0;font-family:Montserrat;background:linear-gradient(135deg,#11998e,#38ef7d,#30cfd0,#330867);color:white;text-align:center;min-height:100vh;}}
-.card{{width:80%;margin:15px auto;padding:20px;border-radius:15px;background:rgba(255,255,255,0.2);cursor:pointer;transition:0.3s;font-size:20px;}}
-.card:hover{{background:rgba(255,255,255,0.35);transform:scale(1.05);}}
-a{{text-decoration:none;color:white;}}
+body{
+    margin:0; font-family:'Montserrat',sans-serif;
+    background: linear-gradient(135deg,#11998e,#38ef7d,#30cfd0,#330867);
+    background-size: 400% 400%;
+    animation: bgMove 20s ease infinite;
+    color:white; text-align:center;
+}
+@keyframes bgMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+h1{margin-top:20px; font-family:'Playfair Display', serif;}
+.card{
+    width:90%;
+    margin:15px auto;
+    padding:20px;
+    border-radius:20px;
+    background:rgba(0,0,0,0.35);
+    font-size:20px;
+    cursor:pointer;
+    transition:0.3s;
+}
+.card:hover{background:rgba(0,0,0,0.5); transform:scale(1.02);}
+a{text-decoration:none;color:white;}
 </style>
 </head>
 <body>
-{all_tools_html}
-<hr>
-{tool_html}
-<h3>{result}</h3>
-<a href='/dashboard'>⬅ Back to Dashboard / डैशबोर्ड पर वापस जाएँ</a>
+<h1>🌾 Crop Management Tools / फ़सल प्रबंधन टूल्स</h1>
+
+<a href="/tool/1"><div class="card">1️⃣ Crop Yield Estimator / फ़सल अनुमान</div></a>
+<a href="/tool/2"><div class="card">2️⃣ Soil Nutrient Balancer / मिट्टी पोषण संतुलन</div></a>
+<a href="/tool/3"><div class="card">3️⃣ Water Demand Calculator / जल आवश्यकता कैलकुलेटर</div></a>
+<a href="/tool/4"><div class="card">4️⃣ Irrigation Interval Predictor / सिंचाई अंतराल पूर्वानुमान</div></a>
+<a href="/tool/5"><div class="card">5️⃣ Crop Rotation Planner / फ़सल चक्र योजना</div></a>
+<a href="/tool/6"><div class="card">6️⃣ Pest Risk Score / कीट जोखिम मूल्यांकन</div></a>
+<a href="/tool/7"><div class="card">7️⃣ Growth Stage Advisor / विकास अवस्था सलाहकार</div></a>
+<a href="/tool/8"><div class="card">8️⃣ Harvest Time Predictor / कटाई समय पूर्वानुमान</div></a>
+<a href="/tool/9"><div class="card">9️⃣ Fertilizer Efficiency Checker / उर्वरक दक्षता जाँच</div></a>
+<a href="/tool/10"><div class="card">🔟 Profit Forecast Tool / लाभ पूर्वानुमान</div></a>
+
+<a href="/dashboard"><div class="card">⬅ Back to Dashboard / डैशबोर्ड पर वापस</div></a>
 </body>
 </html>
-""")
+"""
 
-if name=='main': app.run(debug=True)
+# ==========================
+# Tool Engine (Practical + Theory)
+# ==========================
+from flask import request
+
+@app.route("/tool/<tool_id>", methods=["GET","POST"])
+def tool(tool_id):
+    result = ""
+    forms = {
+        "1": """<h2>🌾 Crop Yield Estimator</h2>
+<p>Theory: Estimates yield based on area, seed rate & rainfall.</p>
+<form method='post'>
+Area (acres): <input name='area'><br><br>
+Seed rate (kg/acre): <input name='seed'><br><br>
+Rainfall (mm): <input name='rain'><br><br>
+<button type='submit'>Calculate</button>
+</form>""",
+
+        "2": """<h2>🧪 Soil Nutrient Balancer</h2>
+<p>Theory: Adjusts nutrients based on soil pH.</p>
+<form method='post'>
+Soil pH: <input name='ph'><br><br>
+<button type='submit'>Check</button>
+</form>""",
+
+        "3": """<h2>💧 Water Demand Calculator</h2>
+<p>Theory: Calculates water need based on temperature.</p>
+<form method='post'>
+Temperature °C: <input name='temp'><br><br>
+<button type='submit'>Calculate</button>
+</form>""",
+
+        "4": """<h2>📅 Irrigation Interval Predictor</h2>
+<p>Theory: Determines irrigation frequency based on soil type.</p>
+<form method='post'>
+Soil (sandy/loamy/clay): <input name='soil'><br><br>
+<button type='submit'>Predict</button>
+</form>""",
+
+        "5": """<h2>🌿 Crop Rotation Planner</h2>
+<p>Theory: Suggests next crop to maintain soil fertility.</p>
+<form method='post'>
+Last Crop: <input name='crop'><br><br>
+<button type='submit'>Suggest</button>
+</form>""",
+
+        "6": """<h2>🦠 Pest Risk Score</h2>
+<p>Theory: Estimates pest attack probability based on humidity & temperature.</p>
+<form method='post'>
+Humidity %: <input name='humidity'><br><br>
+Temperature °C: <input name='temp'><br><br>
+<button type='submit'>Check</button>
+</form>""",
+
+        "7": """<h2>🌾 Growth Stage Advisor</h2>
+<p>Theory: Advises action based on crop age.</p>
+<form method='post'>
+Crop age (days): <input name='age'><br><br>
+<button type='submit'>Check</button>
+</form>""",
+
+        "8": """<h2>🌾 Harvest Time Predictor</h2>
+<p>Theory: Suggests if crop is ready for harvest.</p>
+<form method='post'>
+Crop type: <input name='crop'><br><br>
+Crop age (days): <input name='age'><br><br>
+<button type='submit'>Check</button>
+</form>""",
+
+        "9": """<h2>🧪 Fertilizer Efficiency Checker</h2>
+<p>Theory: Measures output yield per fertilizer input.</p>
+<form method='post'>
+Fertilizer (kg): <input name='fert'><br><br>
+Yield (quintal): <input name='yield'><br><br>
+<button type='submit'>Check</button>
+</form>""",
+
+        "10": """<h2>💰 Profit Forecast Tool</h2>
+<p>Theory: Predicts profit based on yield & market price.</p>
+<form method='post'>
+Yield (quintal): <input name='yield'><br><br>
+Price per quintal ₹: <input name='price'><br><br>
+Total cost ₹: <input name='cost'><br><br>
+<button type='submit'>Calculate</button>
+</form>"""
+    }
+
+    if request.method=="POST":
+        if tool_id=="1":
+            area=float(request.form["area"])
+            seed=float(request.form["seed"])
+            rain=float(request.form["rain"])
+            result=f"<h3>Estimated Yield / अनुमानित उत्पादन: {round(area*seed*(rain/500),2)} quintals</h3>"
+        elif tool_id=="2":
+            ph=float(request.form["ph"])
+            if ph<6: result="Soil acidic → Add Lime + Compost / मिट्टी अम्लीय → चूना + कम्पोस्ट डालें"
+            elif ph>7.5: result="Soil alkaline → Add Organic manure / मिट्टी क्षारीय → कार्बनिक खाद डालें"
+            else: result="Soil balanced → Standard fertilizer dose / मिट्टी संतुलित → सामान्य उर्वरक"
+            result=f"<h3>{result}</h3>"
+        elif tool_id=="3":
+            temp=float(request.form["temp"])
+            base=6000
+            if temp>35: base*=1.2
+            elif temp<20: base*=0.9
+            result=f"<h3>Water Requirement / जल आवश्यकता: {round(base)} liters/acre/day</h3>"
+        elif tool_id=="4":
+            soil=request.form["soil"].lower()
+            if soil=="sandy": r="Irrigate every 4 days / हर 4 दिन सिंचाई करें"
+            elif soil=="clay": r="Irrigate every 8 days / हर 8 दिन सिंचाई करें"
+            else: r="Irrigate every 6 days / हर 6 दिन सिंचाई करें"
+            result=f"<h3>{r}</h3>"
+        elif tool_id=="5":
+            last=request.form["crop"].lower()
+            rotation={"wheat":"Plant legumes next / अगली फसल दलहनी", "rice":"Plant maize next / अगली फसल मक्का","maize":"Plant wheat next / अगली फसल गेहूं"}
+            r=rotation.get(last,"Plant legumes for soil recovery / मिट्टी सुधार के लिए दलहनी लगाएं")
+            result=f"<h3>{r}</h3>"
+        elif tool_id=="6":
+            hum=float(request.form["humidity"])
+            temp=float(request.form["temp"])
+            risk=(hum/100)*temp
+            if risk>25: r="⚠ High Pest Risk / उच्च कीट जोखिम"
+            else: r="Low to Moderate Risk / कम या मध्यम जोखिम"
+            result=f"<h3>Pest Risk Score / कीट जोखिम स्कोर: {round(risk,2)}<br>{r}</h3>"
+        elif tool_id=="7":
+            age=int(request.form["age"])
+            if age<30: r="Vegetative Stage → Focus on nitrogen / पौधे की वृद्धि चरण → नाइट्रोजन पर ध्यान दें"
+            elif age<60: r="Flowering Stage → Balanced nutrients / फूल आने का चरण → संतुलित पोषण"
+            else: r="Maturity Stage → Reduce irrigation / परिपक्वता चरण → सिंचाई कम करें"
+            result=f"<h3>{r}</h3>"
+        elif tool_id=="8":
+            crop=request.form["crop"].lower()
+            age=int(request.form["age"])
+            if crop=="wheat" and age>=120 or crop=="rice" and age>=150: r="Ready for harvest / कटाई के लिए तैयार"
+            else: r="Not ready yet / अभी तैयार नहीं"
+            result=f"<h3>{r}</h3>"
+        elif tool_id=="9":
+            fert=float(request.form["fert"])
+            yield_amt=float(request.form["yield"])
+            eff=(yield_amt/fert)*100
+            result=f"<h3>Efficiency / दक्षता: {round(eff,2)}%</h3>"
+        elif tool_id=="10":
+            yield_amt=float(request.form["yield"])
+            price=float(request.form["price"])
+            cost=float(request.form["cost"])
+            profit=(yield_amt*price)-cost
+            result=f"<h3>Estimated Profit / अनुमानित लाभ: ₹{round(profit,2)}</h3>"
+
+    return f"""
+<html>
+<head>
+<title>Tool {tool_id}</title>
+<style>
+body{{margin:0; font-family:'Montserrat',sans-serif; background: linear-gradient(135deg,#11998e,#38ef7d,#30cfd0,#330867); background-size: 400% 400%; animation: bgMove 20s ease infinite; color:white; text-align:center;}}
+@keyframes bgMove{{0%{{background-position:0% 50%;}}50%{{background-position:100% 50%;}}100%{{background-position:0% 50%;}}}}
+h2{{margin-top:20px;}}
+form{{margin-top:20px;}}
+input{{padding:5px; margin:5px;}}
+button{{padding:8px 20px; margin-top:10px; border-radius:8px; background:linear-gradient(45deg,#fdd835,#fbc02d); border:none; color:#2f6f2f; font-weight:bold; cursor:pointer;}}
+button:hover{{transform:scale(1.05);}}
+</style>
+</head>
+<body>
+{forms.get(tool_id,"Invalid Tool")}
+{result}
+<br><br>
+<a href='/crop'>⬅ Back to Crop Tools / फ़सल टूल्स पर वापस</a>
+</body>
+</html>
+"""
