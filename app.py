@@ -157,3 +157,213 @@ h2{ font-size:24px; margin:0; padding:5px; text-shadow:1px 1px 6px rgba(0,0,0,0.
 </body>
 </html>
 """
+# ================= CATEGORY 1 – 10 REAL WORKING TOOLS =================
+from flask import request
+
+@app.route("/category1")
+def category1():
+    return """
+    <h2>🌾 Crop Management Tools / फ़सल प्रबंधन टूल्स</h2>
+    <a href='/tool/1'>1️⃣ Crop Yield Estimator</a><br><br>
+    <a href='/tool/2'>2️⃣ Soil Nutrient Balancer</a><br><br>
+    <a href='/tool/3'>3️⃣ Water Demand Calculator</a><br><br>
+    <a href='/tool/4'>4️⃣ Irrigation Interval Predictor</a><br><br>
+    <a href='/tool/5'>5️⃣ Crop Rotation Planner</a><br><br>
+    <a href='/tool/6'>6️⃣ Pest Risk Score</a><br><br>
+    <a href='/tool/7'>7️⃣ Growth Stage Advisor</a><br><br>
+    <a href='/tool/8'>8️⃣ Harvest Time Predictor</a><br><br>
+    <a href='/tool/9'>9️⃣ Fertilizer Efficiency Checker</a><br><br>
+    <a href='/tool/10'>🔟 Profit Forecast Tool</a><br><br>
+    <a href='/dashboard'>⬅ Back to Dashboard</a>
+    """
+
+# ================= TOOL ENGINE =================
+@app.route("/tool/<tool_id>", methods=["GET","POST"])
+def tools(tool_id):
+
+    result = ""
+
+    if request.method == "POST":
+
+        if tool_id == "1":
+            area = float(request.form["area"])
+            seed = float(request.form["seed"])
+            rain = float(request.form["rain"])
+            yield_est = area * seed * (rain / 500)
+            result = f"Estimated Yield / अनुमानित उत्पादन: {round(yield_est,2)} quintals"
+
+        elif tool_id == "2":
+            ph = float(request.form["ph"])
+            if ph < 6:
+                result = "Soil acidic → Add Lime + Compost"
+            elif ph > 7.5:
+                result = "Soil alkaline → Add Organic manure"
+            else:
+                result = "Soil balanced → Standard fertilizer dose"
+
+        elif tool_id == "3":
+            temp = float(request.form["temp"])
+            base = 6000
+            if temp > 35:
+                base *= 1.2
+            elif temp < 20:
+                base *= 0.9
+            result = f"Water Requirement: {round(base)} liters/acre/day"
+
+        elif tool_id == "4":
+            soil = request.form["soil"].lower()
+            if soil == "sandy":
+                result = "Irrigate every 4 days"
+            elif soil == "clay":
+                result = "Irrigate every 8 days"
+            else:
+                result = "Irrigate every 6 days"
+
+        elif tool_id == "5":
+            last = request.form["crop"].lower()
+            rotation = {
+                "wheat":"Plant legumes next",
+                "rice":"Plant maize next",
+                "maize":"Plant wheat next"
+            }
+            result = rotation.get(last,"Plant legumes for soil recovery")
+
+        elif tool_id == "6":
+            hum = float(request.form["humidity"])
+            temp = float(request.form["temp"])
+            risk = (hum/100) * temp
+            result = f"Pest Risk Score: {round(risk,2)}"
+
+        elif tool_id == "7":
+            age = int(request.form["age"])
+            if age < 30:
+                result = "Vegetative Stage → Focus on nitrogen"
+            elif age < 60:
+                result = "Flowering Stage → Balanced nutrients"
+            else:
+                result = "Maturity Stage → Reduce irrigation"
+
+        elif tool_id == "8":
+            crop = request.form["crop"].lower()
+            age = int(request.form["age"])
+            if crop=="wheat" and age>=120:
+                result="Ready for harvest"
+            elif crop=="rice" and age>=150:
+                result="Ready for harvest"
+            else:
+                result="Not ready yet"
+
+        elif tool_id == "9":
+            fert = float(request.form["fert"])
+            yield_amt = float(request.form["yield"])
+            efficiency = (yield_amt/fert)*100
+            result = f"Efficiency: {round(efficiency,2)}%"
+
+        elif tool_id == "10":
+            yield_amt = float(request.form["yield"])
+            price = float(request.form["price"])
+            cost = float(request.form["cost"])
+            profit = (yield_amt*price)-cost
+            result = f"Estimated Profit: ₹{round(profit,2)}"
+
+    # ================= HTML FORM =================
+    forms = {
+        "1": """
+        <h3>🌾 Crop Yield Estimator</h3>
+        <p>Theory: Estimates yield based on area, seed rate & rainfall.</p>
+        <form method='post'>
+        Area (acres): <input name='area'><br><br>
+        Seed rate (kg/acre): <input name='seed'><br><br>
+        Rainfall (mm): <input name='rain'><br><br>
+        <button type='submit'>Calculate</button>
+        </form>
+        """,
+
+        "2": """
+        <h3>🧪 Soil Nutrient Balancer</h3>
+        <p>Theory: Adjusts nutrients based on soil pH.</p>
+        <form method='post'>
+        Soil pH: <input name='ph'><br><br>
+        <button type='submit'>Check</button>
+        </form>
+        """,
+
+        "3": """
+        <h3>💧 Water Demand Calculator</h3>
+        <p>Theory: Calculates water need based on temperature.</p>
+        <form method='post'>
+        Temperature °C: <input name='temp'><br><br>
+        <button type='submit'>Calculate</button>
+        </form>
+        """,
+
+        "4": """
+        <h3>📅 Irrigation Interval Predictor</h3>
+        <p>Theory: Irrigation frequency based on soil type.</p>
+        <form method='post'>
+        Soil (sandy/loamy/clay): <input name='soil'><br><br>
+        <button type='submit'>Predict</button>
+        </form>
+        """,
+
+        "5": """
+        <h3>🌿 Crop Rotation Planner</h3>
+        <p>Theory: Suggests next crop.</p>
+        <form method='post'>
+        Last Crop: <input name='crop'><br><br>
+        <button type='submit'>Suggest</button>
+        </form>
+        """,
+
+        "6": """
+        <h3>🦠 Pest Risk Score</h3>
+        <p>Theory: Risk based on humidity & temp.</p>
+        <form method='post'>
+        Humidity %: <input name='humidity'><br><br>
+        Temperature °C: <input name='temp'><br><br>
+        <button type='submit'>Check</button>
+        </form>
+        """,
+
+        "7": """
+        <h3>🌾 Growth Stage Advisor</h3>
+        <p>Theory: Advises based on crop age.</p>
+        <form method='post'>
+        Crop Age (days): <input name='age'><br><br>
+        <button type='submit'>Check</button>
+        </form>
+        """,
+
+        "8": """
+        <h3>🌾 Harvest Time Predictor</h3>
+        <p>Theory: Checks if crop ready.</p>
+        <form method='post'>
+        Crop type: <input name='crop'><br><br>
+        Crop age (days): <input name='age'><br><br>
+        <button type='submit'>Check</button>
+        </form>
+        """,
+
+        "9": """
+        <h3>🧪 Fertilizer Efficiency Checker</h3>
+        <p>Theory: Measures output per fertilizer input.</p>
+        <form method='post'>
+        Fertilizer (kg): <input name='fert'><br><br>
+        Yield (quintal): <input name='yield'><br><br>
+        <button type='submit'>Check</button>
+        </form>
+        """,
+
+        "10": """
+        <h3>💰 Profit Forecast Tool</h3>
+        <p>Theory: Predicts profit based on yield & market price.</p>
+        <form method='post'>
+        Yield (quintal): <input name='yield'><br><br>
+        Price per quintal ₹: <input name='price'><br><br>
+        Total cost ₹: <input name='cost'><br><br>
+        <button type='submit'>Calculate</button>
+        </form>
+        """
+    }
+
+    return forms.get(tool_id,"Invalid Tool") + f"<h3>{result}</h3><br><a href='/category1'>⬅ Back</a>"
