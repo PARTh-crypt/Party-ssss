@@ -108,3 +108,55 @@ def dashboard():
     </body>
     </html>
     """
+    @app.route("/crop")
+def crop():
+    return """
+    <html>
+    <head>
+    <style>
+    body{
+        margin:0;
+        font-family:Montserrat;
+        background: linear-gradient(135deg,#134E5E,#71B280);
+        color:white;
+        text-align:center;
+    }
+    h2{
+        padding-top:20px;
+    }
+    .btn{
+        width:85%;
+        padding:15px;
+        margin:10px;
+        font-size:18px;
+        border:none;
+        border-radius:12px;
+        background:#fdd835;
+        cursor:pointer;
+    }
+    a{
+        text-decoration:none;
+    }
+    </style>
+    </head>
+    <body>
+
+    <h2>Crop Management Tools<br>फसल प्रबंधन उपकरण</h2>
+
+    <a href="/tool/1"><button class="btn">🌧 Rain Check</button></a>
+    <a href="/tool/2"><button class="btn">🌿 Plant Health</button></a>
+    <a href="/tool/3"><button class="btn">🐛 Pest Check</button></a>
+    <a href="/tool/4"><button class="btn">💧 Soil Dry?</button></a>
+    <a href="/tool/5"><button class="btn">🌾 Harvest Time</button></a>
+    <a href="/tool/6"><button class="btn">🌡 Heat Level</button></a>
+    <a href="/tool/7"><button class="btn">☁ Cloud Check</button></a>
+    <a href="/tool/8"><button class="btn">🧪 Fertilizer Use</button></a>
+    <a href="/tool/9"><button class="btn">🍂 Yellow Leaves</button></a>
+    <a href="/tool/10"><button class="btn">🏪 Storage Check</button></a>
+
+    <br><br>
+    <a href="/dashboard" style="color:white;">⬅ Back</a>
+
+    </body>
+    </html>
+    """
