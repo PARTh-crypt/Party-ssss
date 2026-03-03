@@ -68,294 +68,153 @@ h2 {
 # ==========================
 @app.route("/dashboard")
 def dashboard():
-    return """
 <!DOCTYPE html>
 <html>
 <head>
+<title>Kisan Saathi Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body{
     margin:0;
-    font-family: 'Montserrat', sans-serif;
-    background: linear-gradient(135deg,#4facfe,#43e97b);
-    text-align:center;
-    color:white;
-}
-h1{
-    padding-top:30px;
-}
-.category-btn{
-    width:80%;
-    padding:20px;
-    margin:25px;
-    font-size:22px;
-    border:none;
-    border-radius:18px;
-    background:white;
-    color:#2f6f2f;
-    font-weight:bold;
-    cursor:pointer;
-}
-.category-btn:hover{
-    transform:scale(1.05);
-}
-</style>
-</head>
-<body>
-
-<h1>Dashboard / डैशबोर्ड</h1>
-
-<button class="category-btn" onclick="window.location.href='/crop'">
-🌾 Crop Management / फसल प्रबंधन
-</button>
-
-</body>
-</html>
-"""
-    # ==========================
-# Crop Management
-# ==========================
-@app.route("/crop")
-def crop():
-    return """
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-body{
-    margin:0;
-    font-family: 'Montserrat', sans-serif;
+    font-family:sans-serif;
     background: linear-gradient(135deg,#11998e,#38ef7d);
-    text-align:center;
     color:white;
+    text-align:center;
 }
-h2{
-    padding-top:20px;
+
+h1{
+    padding:20px;
 }
+
 .tool-btn{
     width:85%;
-    padding:18px;
-    margin:12px;
+    padding:15px;
+    margin:10px;
     font-size:18px;
     border:none;
-    border-radius:15px;
-    background:#fff176;
-    color:#2f6f2f;
-    font-weight:bold;
+    border-radius:12px;
+    background:#fdd835;
     cursor:pointer;
 }
-.tool-btn:hover{
-    transform:scale(1.05);
+
+.result{
+    margin:20px;
+    padding:15px;
+    background:rgba(0,0,0,0.2);
+    border-radius:12px;
 }
 </style>
+
+<script>
+function showTool(tool){
+
+let data = {
+1:["बारिश हो रही है?",
+   "Rain increases soil moisture.","आज सिंचाई न करें।",
+   "Soil may dry.","हल्की सिंचाई करें।"],
+
+2:["पौधा हरा है?",
+   "Green leaves mean good nutrition.","खाद की जरूरत नहीं।",
+   "Nutrient deficiency possible.","नाइट्रोजन खाद दें।"],
+
+3:["कीड़े दिख रहे हैं?",
+   "Pests damage crops.","कीटनाशक स्प्रे करें।",
+   "Crop safe.","सप्ताह में जांच करें।"],
+
+4:["मिट्टी सूखी है?",
+   "Dry soil weakens roots.","तुरंत पानी दें।",
+   "Moisture enough.","अभी पानी की जरूरत नहीं।"],
+
+5:["दाने सख्त हैं?",
+   "Hard grains mean harvest time.","कटाई शुरू करें।",
+   "Crop immature.","1-2 सप्ताह प्रतीक्षा करें।"],
+
+6:["बहुत गर्मी है?",
+   "High heat harms crops.","पानी बढ़ाएं।",
+   "Temperature normal.","सामान्य देखभाल करें।"],
+
+7:["घने बादल हैं?",
+   "Rain possible.","आज स्प्रे न करें।",
+   "Low rain chance.","सिंचाई कर सकते हैं।"],
+
+8:["खाद हाल में डाली?",
+   "Excess fertilizer harmful.","और खाद न डालें।",
+   "Nutrients may be low.","संतुलित खाद डालें।"],
+
+9:["पत्ते पीले हैं?",
+   "Nitrogen deficiency.","यूरिया डालें।",
+   "Plant healthy.","सामान्य देखभाल करें।"],
+
+10:["फसल सूखी है?",
+    "Good for storage.","सूखी जगह स्टोर करें।",
+    "Moisture present.","कुछ दिन और सुखाएं।"]
+};
+
+let item = data[tool];
+
+document.getElementById("question").innerHTML = item[0];
+document.getElementById("result").innerHTML = `
+<button class="tool-btn" onclick="showAnswer(${tool},'yes')">हाँ / Yes</button>
+<button class="tool-btn" onclick="showAnswer(${tool},'no')">नहीं / No</button>
+`;
+}
+
+function showAnswer(tool,ans){
+
+let data = {
+1:["Rain increases soil moisture.","आज सिंचाई न करें.",
+   "Soil may dry.","हल्की सिंचाई करें."],
+2:["Green leaves good.","खाद जरूरत नहीं.",
+   "Nutrient deficiency.","नाइट्रोजन खाद दें."],
+3:["Pests harmful.","स्प्रे करें.",
+   "Safe crop.","जांच करते रहें."],
+4:["Dry soil bad.","पानी दें.",
+   "Moisture ok.","जरूरत नहीं."],
+5:["Harvest time.","कटाई करें.",
+   "Not ready.","प्रतीक्षा करें."],
+6:["Heat harmful.","पानी बढ़ाएं.",
+   "Normal temp.","देखभाल करें."],
+7:["Rain possible.","स्प्रे न करें.",
+   "No rain.","सिंचाई करें."],
+8:["Too much fertilizer bad.","और खाद न डालें.",
+   "Nutrient low.","संतुलित खाद डालें."],
+9:["Nitrogen low.","यूरिया डालें.",
+   "Healthy plant.","देखभाल रखें."],
+10:["Ready to store.","सूखी जगह रखें.",
+    "Still wet.","और सुखाएं."]
+};
+
+let item = data[tool];
+
+if(ans=="yes"){
+document.getElementById("result").innerHTML =
+"<div class='result'><b>Theory:</b><br>"+item[0]+"<br><br><b>Practical:</b><br>"+item[1]+"</div>";
+}else{
+document.getElementById("result").innerHTML =
+"<div class='result'><b>Theory:</b><br>"+item[2]+"<br><br><b>Practical:</b><br>"+item[3]+"</div>";
+}
+}
+</script>
 </head>
+
 <body>
 
-<h2>Crop Tools / फसल उपकरण</h2>
+<h1>🌾 Crop Management Dashboard<br>फसल प्रबंधन</h1>
 
-<button class="tool-btn" onclick="window.location.href='/tool/1'">🌧 Rain Check / बारिश जांच</button>
-<button class="tool-btn" onclick="window.location.href='/tool/2'">🌱 Plant Health / पौधा स्थिति</button>
-<button class="tool-btn" onclick="window.location.href='/tool/3'">🐛 Pest Problem / कीट समस्या</button>
-<button class="tool-btn" onclick="window.location.href='/tool/4'">💧 Water Need / पानी जरूरत</button>
-<button class="tool-btn" onclick="window.location.href='/tool/5'">🌾 Harvest Time / कटाई समय</button>
-<button class="tool-btn" onclick="window.location.href='/tool/6'">🌡 Temperature Effect / तापमान प्रभाव</button>
-<button class="tool-btn" onclick="window.location.href='/tool/7'">🌤 Weather Advice / मौसम सलाह</button>
-<button class="tool-btn" onclick="window.location.href='/tool/8'">🧪 Fertilizer Need / खाद जरूरत</button>
-<button class="tool-btn" onclick="window.location.href='/tool/9'">🌿 Leaf Color Check / पत्ते रंग जांच</button>
-<button class="tool-btn" onclick="window.location.href='/tool/10'">📦 Storage Advice / भंडारण सलाह</button>
+<button class="tool-btn" onclick="showTool(1)">🌧 Rain</button>
+<button class="tool-btn" onclick="showTool(2)">🌿 Plant Health</button>
+<button class="tool-btn" onclick="showTool(3)">🐛 Pest</button>
+<button class="tool-btn" onclick="showTool(4)">💧 Soil Dry</button>
+<button class="tool-btn" onclick="showTool(5)">🌾 Harvest</button>
+<button class="tool-btn" onclick="showTool(6)">🌡 Heat</button>
+<button class="tool-btn" onclick="showTool(7)">☁ Cloud</button>
+<button class="tool-btn" onclick="showTool(8)">🧪 Fertilizer</button>
+<button class="tool-btn" onclick="showTool(9)">🍂 Yellow Leaves</button>
+<button class="tool-btn" onclick="showTool(10)">🏪 Storage</button>
+
+<h2 id="question"></h2>
+<div id="result"></div>
 
 </body>
 </html>
-"""
-    # ==========================
-# Tools Logic
-# ==========================
-@app.route("/tool/<int:id>")
-def tool(id):
-
-    data = {
-
-        1:{
-            "question":"क्या खेत में बारिश हो रही है? / Is it raining?",
-            "yes":{
-                "theory":"बारिश से मिट्टी की नमी बढ़ती है। / Rain increases soil moisture.",
-                "practical":"आज सिंचाई न करें। पानी बचाएं। / Do not irrigate today. Save water."
-            },
-            "no":{
-                "theory":"मिट्टी सूख सकती है। / Soil may dry.",
-                "practical":"हल्की सिंचाई करें। / Do light irrigation."
-            }
-        },
-
-        2:{
-            "question":"पौधा हरा और मजबूत दिख रहा है? / Plant healthy green?",
-            "yes":{
-                "theory":"हरी पत्तियाँ अच्छे पोषण का संकेत हैं। / Green leaves show good nutrition.",
-                "practical":"अभी खाद न डालें। सामान्य देखभाल करें। / No fertilizer needed now."
-            },
-            "no":{
-                "theory":"पोषक तत्व की कमी हो सकती है। / Nutrient deficiency possible.",
-                "practical":"नाइट्रोजन वाली खाद दें। / Add nitrogen fertilizer."
-            }
-        },
-
-        3:{
-            "question":"कीड़े या रोग दिख रहे हैं? / Pests visible?",
-            "yes":{
-                "theory":"कीट फसल को नुकसान पहुंचाते हैं। / Pests damage crops.",
-                "practical":"कीटनाशक स्प्रे करें। / Spray pesticide."
-            },
-            "no":{
-                "theory":"फसल सुरक्षित है। / Crop is safe.",
-                "practical":"सप्ताह में एक बार निरीक्षण करें। / Inspect weekly."
-            }
-        },
-
-        4:{
-            "question":"मिट्टी बहुत सूखी है? / Is soil very dry?",
-            "yes":{
-                "theory":"सूखी मिट्टी से जड़ें कमजोर होती हैं। / Dry soil weakens roots.",
-                "practical":"तुरंत सिंचाई करें। / Irrigate immediately."
-            },
-            "no":{
-                "theory":"नमी पर्याप्त है। / Moisture sufficient.",
-                "practical":"अभी पानी की जरूरत नहीं। / No irrigation needed."
-            }
-        },
-
-        5:{
-            "question":"दाने सख्त हो गए हैं? / Grains hard?",
-            "yes":{
-                "theory":"सख्त दाने कटाई का संकेत हैं। / Hard grains mean harvest time.",
-                "practical":"कटाई शुरू करें। / Start harvesting."
-            },
-            "no":{
-                "theory":"फसल अभी कच्ची है। / Crop still immature.",
-                "practical":"1-2 सप्ताह प्रतीक्षा करें। / Wait 1-2 weeks."
-            }
-        },
-
-        6:{
-            "question":"बहुत अधिक गर्मी है? / Too much heat?",
-            "yes":{
-                "theory":"अधिक तापमान फसल को नुकसान दे सकता है। / High heat harms crops.",
-                "practical":"अतिरिक्त सिंचाई करें। / Increase watering."
-            },
-            "no":{
-                "theory":"तापमान सामान्य है। / Temperature normal.",
-                "practical":"सामान्य देखभाल जारी रखें। / Continue normal care."
-            }
-        },
-
-        7:{
-            "question":"आसमान में घने बादल हैं? / Heavy clouds?",
-            "yes":{
-                "theory":"बारिश की संभावना है। / Rain likely.",
-                "practical":"खाद या स्प्रे आज न करें। / Avoid fertilizer/spray today."
-            },
-            "no":{
-                "theory":"बारिश की संभावना कम है। / Low rain chance.",
-                "practical":"सिंचाई कर सकते हैं। / You may irrigate."
-            }
-        },
-
-        8:{
-            "question":"क्या आपने हाल में खाद डाली है? / Recently added fertilizer?",
-            "yes":{
-                "theory":"अधिक खाद नुकसान कर सकती है। / Excess fertilizer harmful.",
-                "practical":"अभी और खाद न डालें। / Do not add more."
-            },
-            "no":{
-                "theory":"पोषक तत्व की जरूरत हो सकती है। / Nutrients may be needed.",
-                "practical":"संतुलित खाद डालें। / Add balanced fertilizer."
-            }
-        },
-
-        9:{
-            "question":"पत्ते पीले हो रहे हैं? / Leaves turning yellow?",
-            "yes":{
-                "theory":"नाइट्रोजन की कमी हो सकती है। / Nitrogen deficiency possible.",
-                "practical":"यूरिया या नाइट्रोजन खाद दें। / Add urea."
-            },
-            "no":{
-                "theory":"पौधा स्वस्थ है। / Plant healthy.",
-                "practical":"सामान्य देखभाल रखें। / Maintain care."
-            }
-        },
-
-        10:{
-            "question":"फसल पूरी तरह सूख गई है? / Crop fully dry?",
-            "yes":{
-                "theory":"भंडारण के लिए सही समय है। / Good for storage.",
-                "practical":"सूखी जगह में स्टोर करें। / Store in dry place."
-            },
-            "no":{
-                "theory":"नमी बची है। / Moisture present.",
-                "practical":"कुछ दिन और सुखाएं। / Dry for few more days."
-            }
-        }
-    }
-
-    item = data.get(id)
-
-    return f"""
-    <html>
-    <head>
-    <style>
-    body{{
-        margin:0;
-        font-family:Montserrat;
-        background: linear-gradient(135deg,#0f2027,#2c5364);
-        color:white;
-        text-align:center;
-    }}
-    h2{{padding-top:30px;}}
-    .btn{{
-        width:80%;
-        padding:15px;
-        margin:15px;
-        font-size:18px;
-        border:none;
-        border-radius:12px;
-        background:#fdd835;
-        cursor:pointer;
-    }}
-    .result{{
-        margin:20px;
-        padding:15px;
-        background:rgba(255,255,255,0.2);
-        border-radius:12px;
-    }}
-    </style>
-
-    <script>
-    function showAnswer(type){{
-        let theory = "{item['yes']['theory']}";
-        let practical = "{item['yes']['practical']}";
-
-        if(type == 'no'){{
-            theory = "{item['no']['theory']}";
-            practical = "{item['no']['practical']}";
-        }}
-
-        document.getElementById("result").innerHTML =
-        "<div class='result'><b>Theory / सिद्धांत:</b><br>"+theory+
-        "<br><br><b>Practical / व्यवहारिक उपाय:</b><br>"+practical+"</div>";
-    }}
-    </script>
-
-    </head>
-    <body>
-
-    <h2>{item['question']}</h2>
-
-    <button class="btn" onclick="showAnswer('yes')">हाँ / Yes</button>
-    <button class="btn" onclick="showAnswer('no')">नहीं / No</button>
-
-    <div id="result"></div>
-
-    <br><br>
-    <a href="/crop" style="color:white;">⬅ Back</a>
-
-    </body>
-    </html>
-    """
