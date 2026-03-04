@@ -43,6 +43,51 @@ input{padding:5px; margin:5px; border-radius:5px;}
 <h2>Har Kisan Ka Digital Saathi</h2>
 <button onclick="showDashboard()">Enter App / ऐप में प्रवेश करें</button>
 </div>
+<!DOCTYPE html>
+<html>
+<head>
+<title>PARTH'S KISAN SAATHI</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<style>
+body {
+    margin:0; font-family:'Montserrat',sans-serif;
+    background: linear-gradient(135deg,#1e3c72,#2a5298,#6dd5ed,#2193b0);
+    background-size: 400% 400%;
+    animation: bgMove 20s ease infinite;
+    color:white; text-align:center;
+}
+@keyframes bgMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+h1,h2{margin:20px 0;}
+button{
+    padding:12px 30px; margin:10px;
+    border:none; border-radius:20px;
+    background:linear-gradient(45deg,#fdd835,#fbc02d);
+    color:#2f6f2f; font-weight:bold; cursor:pointer;
+    font-size:18px;
+}
+button:hover{transform:scale(1.05);}
+.card{
+    width:80%; margin:15px auto; padding:20px;
+    background:rgba(0,0,0,0.35); border-radius:20px;
+    cursor:pointer; transition:0.3s; font-size:20px;
+}
+.card:hover{background:rgba(0,0,0,0.5); transform:scale(1.02);}
+input{padding:5px; margin:5px; border-radius:5px;}
+#app{max-width:600px; margin:auto;}
+</style>
+</head>
+<body>
+<div id="app">
+<!-- Starting Screen -->
+<div id="startScreen">
+<h1>PARTH'S KISAN SAATHI</h1>
+<h2>Har Kisan Ka Digital Saathi</h2>
+<button onclick="showDashboard()">Enter App / ऐप में प्रवेश करें</button>
+</div>
 
 <!-- Dashboard -->
 <div id="dashboard" style="display:none;">
