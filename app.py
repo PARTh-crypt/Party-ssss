@@ -1,214 +1,423 @@
-from flask import Flask, request
-
-app = Flask(__name__)
-
-# ==========================
-# Starting Screen (Already Given)
-# ==========================
-@app.route("/")
-def home():
-    return """
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>PARTH'S KISAN SAATHI</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
-<style>
-body{
-    margin:0;
-    height:100vh;
-    background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef') no-repeat center center fixed;
-    background-size: cover;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    font-family: 'Montserrat', sans-serif;
-    text-align:center;
-    color:white;
-}
-h1{
-font-family: 'Playfair Display', serif;
-font-size:56px;
-margin:10px;
-text-shadow:2px 2px 8px rgba(0,0,0,0.3);
-}
-h2{
-font-size:28px;
-margin:5px;
-text-shadow:1px 1px 4px rgba(0,0,0,0.25);
-}
-.enter-btn{
-margin-top:30px;
-padding:14px 40px;
-border-radius:25px;
-border:none;
-background:linear-gradient(45deg,#fdd835,#fbc02d);
-color:#2f6f2f;
-font-weight:bold;
-cursor:pointer;
-}
-.enter-btn:hover{
-transform:scale(1.05);
-}
-</style>
-</head>
-<body>
-<h1>PARTH'S KISAN SAATHI</h1>
-<h2>Har Kisan Ka Digital Saathi</h2>
-<button class="enter-btn" onclick="window.location.href='/dashboard'">Enter App / ऐप में प्रवेश करें</button>
-</body>
-</html> 
-"""
-
-# ==========================
-# Dashboard
-# ==========================
-@app.route("/dashboard")
-def dashboard():
-    return """
-<!DOCTYPE html>
-<html>
-<head>
-<title>Farmer Dashboard / किसान डैशबोर्ड</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
-<style>
-body {
-    margin:0;
-    font-family: 'Montserrat', sans-serif;
-    background: linear-gradient(135deg,#1e3c72,#2a5298,#00c6ff,#5ee7df);
-    color:white;
-    text-align:center;
-}
-h1 {
-    padding-top:30px;
-    font-family:'Playfair Display', serif;
-    font-size:48px;
-}
-.card {
-    width:80%;
-    margin:20px auto;
-    padding:20px;
-    border-radius:15px;
-    background: rgba(255,255,255,0.2);
-    font-size:22px;
-    cursor:pointer;
-    transition:0.3s;
-}
-.card:hover{
-    transform:scale(1.05);
-    background: rgba(255,255,255,0.35);
-}
-</style>
-</head>
-<body>
-<h1>Farmer Dashboard / किसान डैशबोर्ड</h1>
-<a href="/category1"><div class="card">🌾 Crop Management / फ़सल प्रबंधन</div></a>
-</body>
-</html>
-"""
-
-# ==========================
-# Category 1 – Crop Management Tools
-# ==========================
-@app.route("/category1")
-def category1():
-    return """
-<!DOCTYPE html>
-<html>
-<head>
-<title>Crop Management Tools</title>
-<style>
-body { font-family:Montserrat; background: linear-gradient(135deg,#11998e,#38ef7d,#fbc2eb,#a6c0fe); color:white; text-align:center;}
-h1{padding-top:20px; font-family: 'Playfair Display', serif;}
-.button {padding:15px 25px; margin:10px; border-radius:20px; border:none; background: rgba(255,255,255,0.2); color:white; cursor:pointer; font-size:18px; transition:0.3s;}
-.button:hover {background: rgba(255,255,255,0.35); transform:scale(1.05);}
-</style>
-</head>
-<body>
-<h1>🌾 Crop Management Tools / फ़सल प्रबंधन टूल्स</h1>
-<a href="/tool/1"><button class="button">1️⃣ Crop Yield Estimator / उत्पादन अनुमान</button></a><br>
-<a href="/tool/2"><button class="button">2️⃣ Soil Nutrient Balancer / मिट्टी पोषण संतुलक</button></a><br>
-<a href="/tool/3"><button class="button">3️⃣ Water Demand Calculator / पानी की आवश्यकता</button></a><br>
-<a href="/tool/4"><button class="button">4️⃣ Irrigation Interval Predictor / सिंचाई अंतराल</button></a><br>
-<a href="/tool/5"><button class="button">5️⃣ Crop Rotation Planner / फसल परिवर्तन योजना</button></a><br>
-<a href="/tool/6"><button class="button">6️⃣ Pest Risk Score / कीट जोखिम</button></a><br>
-<a href="/tool/7"><button class="button">7️⃣ Growth Stage Advisor / विकास चरण सलाहकार</button></a><br>
-<a href="/tool/8"><button class="button">8️⃣ Harvest Time Predictor / फसल कटाई समय</button></a><br>
-<a href="/tool/9"><button class="button">9️⃣ Fertilizer Efficiency Checker / उर्वरक दक्षता</button></a><br>
-<a href="/tool/10"><button class="button">🔟 Profit Forecast Tool / लाभ पूर्वानुमान</button></a><br>
-<a href="/dashboard"><button class="button">⬅ Back to Dashboard / डैशबोर्ड</button></a>
-</body>
-</html>
-"""
-
-# ==========================
-# Tool Engine
-# ==========================
-@app.route("/tool/<tool_id>", methods=["GET","POST"])
-def tool(tool_id):
-    result = ""
-    form_html = ""
-    
-    if tool_id=="1":
-        form_html = """
-        <h2>🌾 Crop Yield Estimator / उत्पादन अनुमान</h2>
-        <p>Theory: Estimates yield based on area, seed & rainfall / क्षेत्र, बीज और वर्षा पर अनुमानित उत्पादन।</p>
-        <form method="post">
-            Area (acres / एकड़): <input name="area" type="number" step="0.01"><br><br>
-            Seed (kg / किलोग्राम): <input name="seed" type="number" step="0.01"><br><br>
-            Rainfall (mm / मिलीमीटर): <input name="rain" type="number" step="0.01"><br><br>
-            <button type="submit">Calculate / गणना करें</button>
-        </form>
-        """
-        if request.method=="POST":
-            area = float(request.form["area"])
-            seed = float(request.form["seed"])
-            rain = float(request.form["rain"])
-            yield_est = area * seed * (rain / 500)
-            result = f"<h3>Estimated Yield / अनुमानित उत्पादन: {round(yield_est,2)} quintals / क्विंटल</h3>"
-
-    elif tool_id=="2":
-        form_html = """
-        <h2>🧪 Soil Nutrient Balancer / मिट्टी पोषण संतुलक</h2>
-        <p>Theory: Adjust nutrients based on soil pH / मिट्टी के पीएच के आधार पर पोषक तत्व संतुलन।</p>
-        <form method="post">
-            Soil pH / मिट्टी पीएच: <input name="ph" type="number" step="0.01"><br><br>
-            <button type="submit">Check / जाँच करें</button>
-        </form>
-        """
-        if request.method=="POST":
-            ph = float(request.form["ph"])
-            if ph<6:
-                result="Soil acidic → Add Lime + Compost / मिट्टी अम्लीय → चूना + कंपोस्ट डालें"
-            elif ph>7.5:
-                result="Soil alkaline → Add Organic manure / मिट्टी क्षारीय → कार्बनिक खाद डालें"
-            else:
-                result="Soil balanced → Standard fertilizer / मिट्टी संतुलित → सामान्य उर्वरक"
-            result = f"<h3>{result}</h3>"
-    
-    # ====== TODO: Implement other tools similarly ======
-    # For brevity, you can add tool 3-10 in the same style
-
-    return f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-    <title>Tool {tool_id}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parth's Kisan Saathi</title>
     <style>
-    body {{ font-family:Montserrat; background: linear-gradient(135deg,#ff758c,#ff7eb3,#c2e59c,#64b3f4); color:white; text-align:center; }}
-    input {{ padding:8px; margin:5px; border-radius:8px; border:none; }}
-    button {{ padding:10px 20px; border-radius:15px; border:none; cursor:pointer; background: rgba(255,255,255,0.2); color:white; margin-top:10px; }}
-    button:hover{{background: rgba(255,255,255,0.35); transform:scale(1.05);}}
-    </style>
-    </head>
-    <body>
-    {form_html}
-    {result}
-    <br><br><a href="/category1" style="color:white;">⬅ Back / वापस</a>
-    </body>
-    </html>
-    """
+        :root {
+            --primary: #2E7D32; /* Deep Green */
+            --secondary: #81C784; /* Light Green */
+            --accent: #FFD54F; /* Harvest Gold */
+            --dark: #1B5E20;
+            --light: #F1F8E9;
+            --white: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --radius: 16px;
+        }
 
-if __name__=="__main__":
-    app.run(debug=True)
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: #333;
+            /* Aesthetic Farming Background */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1625246333195-58197bd47d26?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        /* --- Header --- */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .ai-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: transform 0.2s;
+        }
+
+        .ai-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* --- Main Dashboard --- */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .welcome-text {
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .welcome-text h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+        }
+
+        .category-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border-bottom: 4px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            background: var(--light);
+        }
+
+        .cat-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .cat-title {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .cat-count {
+            font-size: 0.75rem;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        /* --- Tool Modal --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            border-radius: var(--radius);
+            padding: 25px;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #eee;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .tool-list {
+            list-style: none;
+        }
+
+        .tool-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .tool-item:hover {
+            background: var(--light);
+        }
+
+        .tool-item h4 {
+            color: var(--dark);
+        }
+
+        .tool-item span {
+            font-size: 1.2rem;
+            color: var(--secondary);
+        }
+
+        /* --- Active Tool Interface --- */
+        .tool-interface {
+            display: none;
+        }
+
+        .tool-header {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--light);
+            border-radius: 8px;
+            border-left: 5px solid var(--accent);
+            display: none;
+        }
+
+        /* --- AI Chat Interface --- */
+        .chat-container {
+            display: none;
+            flex-direction: column;
+            height: 80vh;
+        }
+
+        .chat-history {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+            font-size: 0.9rem;
+        }
+
+        .user-msg {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+
+        .ai-msg {
+            background: #e0e0e0;
+            color: #333;
+            align-self: flex-start;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input-area input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            font-size: 0.8rem;
+            margin-top: 40px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .welcome-text h1 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            🌾 PARTH'S <span>KISAN SAATHI</span>
+        </div>
+        <button class="ai-btn" onclick="openAI()">
+            🤖 AI Assistant
+        </button>
+    </header>
+
+    <div class="container">
+        <div class="welcome-text">
+            <h1>Welcome, Farmer</h1>
+            <p>Select a category to find your tools</p>
+        </div>
+
+        <div class="category-grid" id="categoryGrid">
+            <!-- Categories injected by JS -->
+        </div>
+    </div>
+
+    <!-- Tool Modal -->
+    <div class="modal-overlay" id="toolModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">×</button>
+            <h2 id="modalTitle" style="color: var(--primary); margin-bottom: 15px;">Category Name</h2>
+            
+            <!-- List View -->
+            <ul class="tool-list" id="toolList">
+                <!-- Tools injected here -->
+            </ul>
+
+            <!-- Active Tool View -->
+            <div class="tool-interface" id="activeToolView">
+                <div class="tool-header">
+                    <h3 id="activeToolName">Tool Name</h3>
+                    <p id="activeToolDesc" style="font-size: 0.9rem; color: #666;">Description</p>
+                </div>
+                <div id="toolInputs">
+                    <!-- Dynamic Inputs -->
+                </div>
+                <button class="action-btn" onclick="calculateResult()">Calculate</button>
+                <div class="result-box" id="resultBox">
+                    <strong>Result:</strong> <span id="resultValue"></span>
+                </div>
+                <button class="action-btn" style="background:#777; margin-top:10px;" onclick="backToTools()">Back to List</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Modal -->
+    <div class="modal-overlay" id="aiModal">
+        <div class="modal-content" style="max-width: 400px;">
+            <button class="close-modal" onclick="closeAI()">×</button>
+            <h2 style="color: var(--primary); margin-bottom: 10px;">AI Kisan Assistant</h2>
+            <div class="chat-container" id="chatContainer">
+                <div class="chat-history" id="chatHistory">
+                    <div class="message ai-msg">Namaste! I am your AI assistant. Ask me about crops, weather, or prices.</div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" placeholder="Type your question..." onkeypress="handleEnter(event)">
+                    <button class="action-btn" style="width: auto; margin:0;" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2023 PARTH'S KISAN SAATHI. Empowering Farmers.
+    </footer>
+
+    <script>
+        // --- DATA STRUCTURE ---
+        // 11 Categories with 10 tools each (Representative subset for code brevity, but structure supports 10)
+        const categories = [
+            {
+                id: 1, name: "Crop Calculator", icon: "🌾",
+                tools: [
+                    { id: "seed_calc", name: "Seed Requirement", desc: "Calculate seeds needed per acre.", inputs: [{label: "Area (Acres)", type: "number"}, {label: "Seed Rate (kg/acre)", type: "number"}], calc: (v1, v2) => (v1 * v2).toFixed(2) + " kg" },
+                    { id: "fertilizer_calc", name: "Fertilizer Mix", desc: "Calculate NPK requirement.", inputs: [{label: "Crop Type", type: "select", options: ["Wheat", "Rice", "Cotton"]}, {label: "Area (Acres)", type: "number"}], calc: (v1, v2) => "Approx " + (v2 * 20) + " kg Urea needed." },
+                    { id: "water_calc", name: "Water Irrigation", desc: "Water needed for irrigation.", inputs: [{label: "Area (Acres)", type: "number"}, {label: "Water Depth (mm)", type: "number"}], calc: (v1, v2) => (v1 * v2 * 10).toFixed(0) + " Liters" },
+                    { id: "yield_est", name: "Yield Estimator", desc: "Estimate total yield.", inputs: [{label: "Area (Acres)", type: "number"}, {label: "Yield per Acre (kg)", type: "number"}], calc: (v1, v2) => (v1 * v2).toFixed(0) + " kg Total" },
+                    { id: "cost_calc", name: "Cost of Cultivation", desc: "Total farming cost.", inputs: [{label: "Labor Cost", type: "number"}, {label: "Input Cost", type: "number"}], calc: (v1, v2) => "₹" + (v1 + v2) },
+                    { id: "profit_calc", name: "Profit Calculator", desc: "Net profit estimation.", inputs: [{label: "Total Cost", type: "number"}, {label: "Selling Price", type: "number"}], calc: (v1, v2) => "Profit: ₹" + (v2 - v1) },
+                    { id: "spray_calc", name: "Spray Mix", desc: "Chemical dosage for spray.", inputs: [{label: "Tank Capacity (L)", type: "number"}, {label: "Dosage (ml/L)", type: "number"}], calc: (v1, v2) => (v1 * v2).toFixed(1) + " ml Chemical needed" },
+                    { id: "hoeing_calc", name: "Hoeing Days", desc: "Labor days for hoeing.", inputs: [{label: "Area (Acres)", type: "number"}], calc: (v1) => Math.ceil(v1 * 2) + " Days" },
+                    { id: "harvest_calc", name: "Harvest Baskets", desc: "Baskets needed for harvest.", inputs: [{label: "Total Yield (kg)", type: "number"}], calc: (v1) => Math.ceil(v1 / 50) + " Baskets (50kg each)" },
+                    { id: "transport_calc", name: "Transport Cost", desc: "Vehicle cost estimation.", inputs: [{label: "Distance (km)", type: "number"}, {label: "Rate per km", type: "number"}], calc: (v1, v2) => "₹" + (v1 * v2)
